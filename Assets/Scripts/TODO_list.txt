@@ -1,0 +1,50 @@
+
+#URLs usadas:
+/*
+Generar el grid de hexágonos: https://www.youtube.com/watch?v=EPaSmQ2vtek
+Navegar por el grid: https://www.youtube.com/watch?v=wxVgIH0j8Wg
+Camera controller: https://www.youtube.com/watch?v=rnqF6S7PfFA
+Dibujar silueta: https://www.youtube.com/watch?v=ehyMwVnnnTg
+Importar FBX: https://www.youtube.com/watch?v=y1JKJGWcf90
+*/
+
+# Para gestionar los estados del reino
+1. (**HECHO**)Hacer que se pueda salvar el grid y los estados
+2. (**HECHO**)Hacer que se pueda cargar el grid y los estados
+3. (**HECHO**)Hacer que los estados tengan sus fronteras 
+       3.1. - (**HECHO**)Que no se creen dos bloques por frontera, sólo uno
+       3.2. - (**HECHO**)Que se pueda pintar celdas de distinto material (agua, arena, tierra, ...)
+4. (**HECHO**)Que al clickar en una celda se destaque el estado al que pertenece
+5. (**HECHO**)Que el player vaya de la capital de un estado a la del otro
+6. (**HECHO**)Que los enemigos también se vayan de una capital a otra
+7. (**HECHO**)Si hay un enemigo/player se empieza el combate
+8. (**HECHO**)Si no hay nadie se conquista el estado
+9. (**HECHO**)Se muestra la info cuando se pasa el ratón sobre un estado
+
+10. Aplicar animaciones de mixamo a los soldados 
+    10.1 Un par de animaciones idle
+    10.2 Una animación de moverse (si no, dejo el movimiento en casillas y au)
+    10.3 Animación de combate (Que luchen un par de segundos)
+
+11. Hacer el algoritmo de juego 
+    11.1 (**HECHO**)Mostrar el player actual
+        11.1.1 (**HECHO**) Mostrar el número de turno/fecha (Mostramos sólo el número de turno, por ahora)
+    11.2 Informar de eventos
+        +(**HECHO**)Conquista de territorio
+        +(**HECHO**)Resultado de una batalla
+        +Se ha ganado un nuevo ejército
+        +...?
+
+12. ORO
+    12.1 (**HECHO falta poner las cantidades definitivas y testear**)Contar el oro de cada jugador e ir aumentándolo y disminuyéndolo
+    12.2 (**HECHO**) Comprar nuevas unidades y elegir dónde colocarlas (en los territorios propios no ocupados)
+
+13. (**HECHO**) Que se elija el territorio donde colocar la nueva unidad
+
+14. (**HECHO**) Que al mover el ejército sólo pase por los territorios origen y destino
+
+15. Decidir tamaños
+    Mapa 1.1
+    Fronteras x=1.1 z=0.2
+    Soldados escala 1,1,1  posición ?,1,?
+    Cámara posición 35,40,-65  rotación 60,0,0

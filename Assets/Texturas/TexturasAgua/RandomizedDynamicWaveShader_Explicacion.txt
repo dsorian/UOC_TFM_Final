@@ -1,0 +1,44 @@
+Cambios Realizados
+
+    Zonas Dinámicas:
+        Las zonas que se mueven cambian dinámicamente con el tiempo.
+        Esto se logra añadiendo _Time.y al cálculo del valor aleatorio:
+
+    float randomValue = rand(sectionCoords + float2(_Time.y, _Time.y));
+
+Velocidad Basada en Posición:
+
+    La velocidad de las ondas varía según la posición de la sección.
+    Esto se logra añadiendo un valor aleatorio basado en las coordenadas de la sección:
+
+    float positionBasedSpeed = _WaveSpeed + rand(sectionCoords) * 0.5;
+
+Condiciones de Movimiento:
+
+    Solo las zonas donde el valor aleatorio es menor que _MoveProbability tienen movimiento.
+
+Cómo Configurarlo
+
+    Crea un Material:
+        Aplica este shader a un nuevo material.
+        Configura las propiedades:
+            _Rows y _Columns: Ajusta el número de secciones. Por ejemplo, 4 y 4 para una cuadrícula de 4x4.
+            _MoveProbability: Establece la probabilidad de que una sección se mueva.
+            _WaveSpeed y _WaveStrength: Ajusta la velocidad y fuerza global del efecto.
+
+    Aplica el Material:
+        Asigna el material al objeto que desees en tu escena.
+
+    Resultados Visuales:
+        Las zonas en movimiento cambiarán dinámicamente cada pocos segundos.
+        La velocidad del movimiento de las ondas será diferente para cada sección, basada en su posición.
+
+Personalización Adicional
+
+    Cambios de Velocidad Dinámicos:
+        Si quieres que la velocidad cambie no solo según la posición, sino también con el tiempo, puedes añadir _Time.y al cálculo de positionBasedSpeed.
+
+    Zonas Más Detalladas:
+        Incrementa el número de filas y columnas (_Rows y _Columns) para tener más subdivisiones.
+
+Este shader ofrece un efecto dinámico y realista, perfecto para simular movimiento aleatorio en diferentes zonas de una textura.
