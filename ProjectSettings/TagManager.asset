@@ -12,6 +12,7 @@ TagManager:
   - AguaRio
   - Undefined
   - Limite
+  - TargetProyectil
   layers:
   - Default
   - TransparentFX

@@ -6,7 +6,6 @@ public class Jugador : MonoBehaviour
 {
     public int numJugador;
     public int cantidadOro = 3;
-    public int numEjercitos = 2;
     public List<GameObject> ejercitos;
 
 

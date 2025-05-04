@@ -37,17 +37,10 @@ public class PropsCampoBatalla : MonoBehaviour
             // Seleccionar aleatoriamente un prefab
             GameObject prefabToSpawn;
             //Sobre todo pongo árboles
-            if( Random.Range(0,100) > 5)
+            if( Random.Range(0,100) > 15)
                 prefabToSpawn = objectPrefabs[Random.Range(0, 2)];
             else
                 prefabToSpawn = objectPrefabs[Random.Range(2, objectPrefabs.Length)];
-
-            //Pares o impares
-            /*
-            if( i % 2 == 0)
-                prefabToSpawn = objectPrefabs[0];
-            else    
-                prefabToSpawn = objectPrefabs[1];*/
 
             // Generar posición aleatoria dentro de los límites del plano
             float randomX = Random.Range(-planeSize.x / 2f, planeSize.x / 2f);

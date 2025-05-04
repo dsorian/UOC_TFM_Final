@@ -104,7 +104,7 @@ public class TileManager20240926 : MonoBehaviour
             HexTile[] lasTiles = tiles.Values.ToArray();
             tile = lasTiles[UnityEngine.Random.Range(0,lasTiles.Length)];
             ejercitosP1[i].GetComponent<Ejercito>().currentTile = tile;
-            ejercitosP1[i].GetComponent<Ejercito>().indiceEjercito = i;
+//            ejercitosP1[i].GetComponent<Ejercito>().indiceEjercito = i;
             ejercitosP1[i].GetComponent<Ejercito>().numPlayer = 1;
         }
         ejercitosP2 = new List<GameObject>(); // new GameObject[numEjercitosP2];
@@ -115,7 +115,7 @@ public class TileManager20240926 : MonoBehaviour
             HexTile[] lasTiles = tiles.Values.ToArray();
             tile = lasTiles[UnityEngine.Random.Range(0,lasTiles.Length)];
             ejercitosP2[i].GetComponent<Ejercito>().currentTile = tile;
-            ejercitosP2[i].GetComponent<Ejercito>().indiceEjercito = i;
+            //ejercitosP2[i].GetComponent<Ejercito>().indiceEjercito = i;
             ejercitosP2[i].GetComponent<Ejercito>().numPlayer = 2;
         }
         
@@ -860,7 +860,7 @@ fi
             laCapital = elMapa.capitalesEstados[i].GetComponent<Capital>();
             string elIndiceEjercito = "vacío.";
             if( laCapital.ejercitoOcupante != null)
-                elIndiceEjercito = laCapital.ejercitoOcupante.GetComponent<Ejercito>().indiceEjercito.ToString();
+                elIndiceEjercito = "?";//laCapital.ejercitoOcupante.GetComponent<Ejercito>().indiceEjercito.ToString();
             mensaje += "     "+ i+"      -       "+ laCapital.propietario +"       -       "+elIndiceEjercito+"\n";
         }
         elCanvasUI.transform.GetChild(2).GetComponent<TMP_Text>().text = "Info Juego:\n"+mensaje;

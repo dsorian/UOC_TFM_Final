@@ -52,7 +52,7 @@ public class AI_Turnos_SistemaReglas : MonoBehaviour{
                 //El player2 será siempre la IA mientras no lo cambie
                 Debug.Log("IA Soldado: Soldados que tengo: "+elTileManager.jugadores[2].ejercitos.Count+" voy a ver mis opciones");
                 for( int i=0; i< elTileManager.jugadores[2].ejercitos.Count;i++){
-                    Debug.Log("IA soldado: Viendo si muevo el ejército: "+elTileManager.jugadores[2].ejercitos[i].GetComponent<Ejercito>().indiceEjercito+" del estado: "+elTileManager.jugadores[2].ejercitos[i].GetComponent<Ejercito>().currentTile.GetComponent<HexTile>().numEstado+" ===========INICIO ACCIÓN DE Soldado "+i+"================================");
+                    Debug.Log("IA soldado: Viendo si muevo el ejército: EL INDICEEJERCTIO YA NO SE USA.");//+elTileManager.jugadores[2].ejercitos[i].GetComponent<Ejercito>().indiceEjercito+" del estado: "+elTileManager.jugadores[2].ejercitos[i].GetComponent<Ejercito>().currentTile.GetComponent<HexTile>().numEstado+" ===========INICIO ACCIÓN DE Soldado "+i+"================================");
                     elTileManager.GetComponent<TileManager>().OnSelectTile(elTileManager.jugadores[2].ejercitos[i].GetComponent<Ejercito>().currentTile);
                     if( ! elTileManager.jugadores[2].ejercitos[i].GetComponent<Ejercito>().haMovido){
                         //Obtenemos los vecinos, de quien son y si están ocupados o no

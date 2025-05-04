@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "UOC_TFM_Final.sln"
+    "dotnet.defaultSolution": "TFM_DSS.sln"
 }

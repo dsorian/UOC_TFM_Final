@@ -31,8 +31,7 @@ public class BatallaManager : MonoBehaviour
     public SoundManager elSoundManager;
    
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start(){
         if( PlayerPrefs.GetInt("tutorialActivo") == 1)
             tutorialActivo = true;
         else

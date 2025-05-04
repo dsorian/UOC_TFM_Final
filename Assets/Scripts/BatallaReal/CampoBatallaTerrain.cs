@@ -75,8 +75,8 @@ public class CampoBatallaTerrain : MonoBehaviour
         //El tipo de escenario será uno de los que tenemos disponibles
         this.tipoEscenario = tipoEscenario;
         this.posTipoEscenario = UnityEngine.Random.Range(0,3);
-//this.tipoEscenario = 2;  //Forzar escenario
-//this.posTipoEscenario = 2;   //Forzar tipo
+//this.tipoEscenario = 0;  //Forzar escenario
+//this.posTipoEscenario = 0;   //Forzar tipo
         numEscenario = this.tipoEscenario*3+this.posTipoEscenario;
         Debug.Log("tipoEscenario: "+this.tipoEscenario+" posTipoEscenario: "+ this.posTipoEscenario+" numEscenario: "+numEscenario);
         // Create a new terrain data

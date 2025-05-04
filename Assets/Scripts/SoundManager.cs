@@ -28,7 +28,7 @@ public class SoundManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start(){
-        PlaySound(musicaMapa,0, 0.05f);
+        PlayMusic(musicaMapa[0],true,0.02f,"Mapa");
     }
 
     /// Cambia el AudioListener activo según la cámara seleccionada.
@@ -88,7 +88,7 @@ public class SoundManager : MonoBehaviour
             if (soundArray != null && soundArray.Length > 0)
             {
                 int randomIndex = Random.Range(0, soundArray.Length);
-                mapaSource.PlayOneShot(soundArray[randomIndex], volume * globalVolume);
+                UnidadSeleccionadaP1Source.PlayOneShot(soundArray[randomIndex], volume * globalVolume);
             }
             else
             {

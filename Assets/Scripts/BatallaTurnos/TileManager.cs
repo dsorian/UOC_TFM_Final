@@ -24,7 +24,6 @@ using UnityEngine.Tilemaps;
 
 
 /*TODO:
--Añadir un canvas para el interfaz que muestre las unidades y el turno del jugador que toque
 */
 
 
@@ -61,6 +60,8 @@ public class TileManager : MonoBehaviour
     //Info partida
     public GameObject elMapaReino;
     public Jugador[] jugadores = new Jugador[3];  //0 no se usa, 1 player1, 2 player2
+    public int numEjercitosP1=2;
+    public int numEjercitosP2 = 2;
 
     //Para editar el mapa y crear los estados
     private bool editandoMapa = false;
@@ -144,19 +145,19 @@ public class TileManager : MonoBehaviour
 
         //Creamos los ejércitos en sus casillas
         HexTile tile;
-        jugadores[1].ejercitos = new List<GameObject>(); //new GameObject[numEjercitosP1];
-        for(int i=0; i<jugadores[1].numEjercitos;i++){
+        jugadores[1].ejercitos = new List<GameObject>(); 
+        for(int i=0; i<numEjercitosP1;i++){
             jugadores[1].ejercitos.Add(Instantiate(modeloEjercito, new Vector3(0,0,0), new Quaternion()));
             jugadores[1].ejercitos[i].GetComponentInChildren<SkinnedMeshRenderer>().material = materialesEjercito[1];
 
             HexTile[] lasTiles = tiles.Values.ToArray();
             tile = lasTiles[UnityEngine.Random.Range(0,lasTiles.Length)];
             jugadores[1].ejercitos[i].GetComponent<Ejercito>().currentTile = tile;
-            jugadores[1].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
+//            jugadores[1].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
             jugadores[1].ejercitos[i].GetComponent<Ejercito>().numPlayer = 1;
         }
-        jugadores[2].ejercitos = new List<GameObject>(); // new GameObject[numEjercitosP2];
-        for(int i=0; i<jugadores[2].numEjercitos;i++){
+        jugadores[2].ejercitos = new List<GameObject>(); 
+        for(int i=0; i<numEjercitosP2;i++){
             //Lo creamos
             jugadores[2].ejercitos.Add(Instantiate(modeloEjercito, new Vector3(0,0,0), new Quaternion()));
             jugadores[2].ejercitos[i].GetComponentInChildren<SkinnedMeshRenderer>().material = materialesEjercito[2];
@@ -164,7 +165,7 @@ public class TileManager : MonoBehaviour
             HexTile[] lasTiles = tiles.Values.ToArray();
             tile = lasTiles[UnityEngine.Random.Range(0,lasTiles.Length)];
             jugadores[2].ejercitos[i].GetComponent<Ejercito>().currentTile = tile;
-            jugadores[2].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
+//            jugadores[2].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
             jugadores[2].ejercitos[i].GetComponent<Ejercito>().numPlayer = 2;
         }
         
@@ -183,10 +184,10 @@ public class TileManager : MonoBehaviour
             posIni1 = 9;
             posIni2 = 3;
         }else{
-            posIni1 = 9; //UnityEngine.Random.Range(1,12);
-            posIni2 = 3; //UnityEngine.Random.Range(14,21);
+            posIni1 = UnityEngine.Random.Range(1,11);  //Para debug poner 9
+            posIni2 = UnityEngine.Random.Range(14,21);  //Para debug poner 3
         }
-        for(int i=0; i<jugadores[1].numEjercitos;i++){
+        for(int i=0; i<jugadores[1].ejercitos.Count;i++){
             auxVector2 = elMapaReino.GetComponent<MapaReino>().listaEstados[posIni1].GetCoordsCapital();
             tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[auxVector2.y*elMapaReino.GetComponent<MapaReino>().gridSize.y+auxVector2.x].GetComponent<HexTile>();
             jugadores[1].ejercitos[i].transform.position = tile.transform.position+ new Vector3(0f,0f,0f);
@@ -198,11 +199,10 @@ public class TileManager : MonoBehaviour
             else
                 posIni1++;
         }
-        //Pongo dos capitales ya ocupadas
-        elMapaReino.GetComponent<MapaReino>().capitalesEstados[18].GetComponent<Capital>().SetPropietario(1);
-        elMapaReino.GetComponent<MapaReino>().capitalesEstados[19].GetComponent<Capital>().SetPropietario(1);
+        //Pongo la siguiente capital ya ocupada sin ejército
+        elMapaReino.GetComponent<MapaReino>().capitalesEstados[posIni1+1].GetComponent<Capital>().SetPropietario(1);
 
-        for(int i=0; i<jugadores[2].numEjercitos;i++){
+        for(int i=0; i<jugadores[2].ejercitos.Count;i++){
             auxVector2 = elMapaReino.GetComponent<MapaReino>().listaEstados[posIni2].GetCoordsCapital();
             tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[auxVector2.y*elMapaReino.GetComponent<MapaReino>().gridSize.y+auxVector2.x].GetComponent<HexTile>();
             jugadores[2].ejercitos[i].transform.position = tile.transform.position+ new Vector3(0,0f,0);
@@ -214,9 +214,8 @@ public class TileManager : MonoBehaviour
             else
                 posIni2++;
         }
-        //Pongo dos capitales ya ocupadas
-        elMapaReino.GetComponent<MapaReino>().capitalesEstados[2].GetComponent<Capital>().SetPropietario(2);
-        elMapaReino.GetComponent<MapaReino>().capitalesEstados[7].GetComponent<Capital>().SetPropietario(2);
+        //Pongo la siguiente capital ya ocupada sin ejército
+        elMapaReino.GetComponent<MapaReino>().capitalesEstados[posIni2+1].GetComponent<Capital>().SetPropietario(2);
 
         //player.transform.position = player.GetComponent<Ejercito>().currentTile.transform.position + new Vector3(0,1f,0);
 
@@ -292,14 +291,14 @@ PlayerPrefs.SetInt("numPlayers", 1);
 
 
         //Comprobamos si se ha acabado la partida.
-        if(jugadores[1].numEjercitos == 0 ){
+        if(jugadores[1].ejercitos.Count == 0 ){
             Debug.Log("Victoria del ejército 2. Mostraremos mensaje y volveremos al principio.");
             mensajeFinPartida.text = "PLAYER 2 WINS!!!!!";
             Time.timeScale = 0;
             elCanvasFinPartida.gameObject.SetActive(true);
             //SceneManager.LoadScene("Presentacion_y_menus", LoadSceneMode.Single);
         }
-        if(jugadores[2].numEjercitos == 0 ){
+        if(jugadores[2].ejercitos.Count == 0 ){
             Debug.Log("Victoria del ejército 1. Mostraremos mensaje y volveremos al principio.");
             mensajeFinPartida.text = "PLAYER 1 WINS!!!!!";
             Time.timeScale = 0;
@@ -392,7 +391,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
     //      ***     **          *********   **          *********      **
     //  *******     *******     *********   *******     *********      **
     public void OnHighlightTile(HexTile tile){
-//        Debug.Log("Resaltamos el estado: "+tile.numEstado);
+        //Debug.Log("Resaltamos el estado: "+tile.numEstado);
         if( tutorialActivo)
             return;
         if( Time.timeScale == 0)
@@ -612,12 +611,14 @@ PlayerPrefs.SetInt("numPlayers", 1);
                         }
                         if( vencedor == "atacante"){
                             Debug.Log("Ha ganado el atacante!! Elimino unidad del player defensor. Hay que ocupar el estado.");
+                            /*uso el count de ejercito y así no controla en número que me da problemas
                             //Descuento la unidad del número de ejércitos del jugador que no está jugando (defensor) porque ha perdido
                             if( currentPlayer == 1){
                                 jugadores[2].numEjercitos--;
                             }else{
                                 jugadores[1].numEjercitos--;
                             }
+                            */
                             //Informo en la cortinilla: elCanvasUI_Mapa.transform.GetChild(4).GetComponent<TMP_Text>().text = "Panel info:\n¡¡¡Victoria del ejército atacante!!!";
                             ejercitoSeleccionado.GetComponent<Ejercito>().Andar();
                             //Destroy(laCapitalDestino.ejercitoOcupante);
@@ -625,12 +626,14 @@ PlayerPrefs.SetInt("numPlayers", 1);
                             EliminarEjercito(laCapitalDestino.ejercitoOcupante);
                             laCapitalDestino.GetComponent<Capital>().OcuparCapital(ejercitoSeleccionado);
                         }else{
+                            /*uso el count de ejercito y así no controla en número que me da problemas
                             //Descuento la unidad del número de ejércitos del jugador que está jugando (atacante) porque ha perdido
                             if( currentPlayer == 1){
                                 jugadores[1].numEjercitos--;
                             }else{
                                 jugadores[2].numEjercitos--;
                             }
+                            */
                             //Informo en la cortinilla: Debug.Log("Ha ganado el player defensor!! Eliminar unidad del player atacante. Hay que ocupar el estado.");
                             //elCanvasUI_Mapa.transform.GetChild(4).GetComponent<TMP_Text>().text = "\n¡¡¡Victoria del ejército defensor!!!";
                             //Destroy(ejercitoSeleccionado);
@@ -651,7 +654,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
                             ejercitoSeleccionado.transform.LookAt(new Vector3(0,0,-500));//Mirar al sur
                             laCapitalDestino = elMapaReino.GetComponent<MapaReino>().capitalesEstados[numEstadoActual].GetComponent<Capital>();
                             if( ocupandoEstado){
-                                Debug.Log("=======>En Tick: He llegado a mi destino que es ocupar el estado. Lo ocupa player: "+ejercitoSeleccionado.GetComponent<Ejercito>().numPlayer+" El ejército: "+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito);
+                                Debug.Log("=======>En Tick: He llegado a mi destino que es ocupar el estado. Lo ocupa player: "+ejercitoSeleccionado.GetComponent<Ejercito>().numPlayer);//+" El ejército: "+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito);
                                 //elCanvasUI_Mapa.transform.GetChild(3).GetComponent<TMP_Text>().text = "Panel info:\nTerritorio ocupado.";
                                 ocupandoEstado = false;
                                 laCapitalDestino.GetComponent<Capital>().OcuparCapital(ejercitoSeleccionado);
@@ -662,8 +665,8 @@ PlayerPrefs.SetInt("numPlayers", 1);
                                 uniendoTropas = false;
                                 laCapitalDestino.ejercitoOcupante.GetComponent<Ejercito>().AnyadirTropas(ejercitoSeleccionado.GetComponent<Ejercito>().numCatapulta,ejercitoSeleccionado.GetComponent<Ejercito>().numInfanteria,ejercitoSeleccionado.GetComponent<Ejercito>().numCaballeria);
                                 laCapitalDestino.ejercitoOcupante.GetComponent<Ejercito>().haMovido = true;
-                                Destroy(ejercitoSeleccionado);
                                 EliminarEjercito(ejercitoSeleccionado);
+                                Destroy(ejercitoSeleccionado);
                             }
                         }
                     }
@@ -676,30 +679,21 @@ PlayerPrefs.SetInt("numPlayers", 1);
                         elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
                     //Si hemos movido todas las tropas finaliza el turno
                     //Reiniciamos los movimientos de cada ejército
+                   
                     int numMovidos = 0;
-                    int tamanyoArray = 0;
-                    if( currentPlayer == 1){
-                        tamanyoArray = jugadores[1].ejercitos.Count;
-                        foreach( GameObject unEjercito in jugadores[1].ejercitos){
-                            if( unEjercito.GetComponent<Ejercito>().haMovido){
-                                numMovidos++;
-                            }
-                        }
-                    }
-                    if( currentPlayer == 2 ){
-                        tamanyoArray = jugadores[2].ejercitos.Count;
-                        foreach( GameObject unEjercito in jugadores[2].ejercitos){
-                            if( unEjercito.GetComponent<Ejercito>().haMovido){
-                                numMovidos++;
-                            }
+                    int tamanyoArray = jugadores[currentPlayer].ejercitos.Count;
+                    foreach( GameObject unEjercito in jugadores[currentPlayer].ejercitos){
+                        if( unEjercito.GetComponent<Ejercito>().haMovido){
+                            numMovidos++;
                         }
                     }
                     if( tamanyoArray == numMovidos){
-                        Debug.Log("oro añadido: "+comprobandoFinTurno);
-                        //if( ! comprobandoFinTurno ){
+                        if( ! comprobandoFinTurno ){
                             Debug.Log("A comprobar fin de turno, si le damos oro o no y puede comprar tropa.");
                             ComprobarFinTurno();
-                        //}
+                        }else{
+                            FinalizarTurno();
+                        }
                     }
                 }
                 //Fin de comprobación de fin de turno
@@ -717,8 +711,8 @@ PlayerPrefs.SetInt("numPlayers", 1);
             Debug.Log("Dándose de leches "+tiempoLucha+" luchando: "+luchando);
             if(tiempoLucha > 0){
                 tiempoLucha--;
-                elSoundManager.PlayRandomSound(elSoundManager.sonidosEspada, 0.8f, "Mapa");
-                elSoundManager.PlayRandomSound(elSoundManager.sonidosGritoGolpe, 0.8f, "Mapa");
+                elSoundManager.PlayRandomSound(elSoundManager.sonidosEspada, 0.5f, "Mapa");
+                elSoundManager.PlayRandomSound(elSoundManager.sonidosGritoGolpe, 0.5f, "Mapa");
                 //No va fino esto: ejercitoSeleccionado.GetComponent<Ejercito>().Combatir();
                 yield return new WaitForSeconds(1.0f);
             }
@@ -927,11 +921,22 @@ PlayerPrefs.SetInt("numPlayers", 1);
      */
 
     public void botonFinTurnoPulsado(){
+        Debug.Log("botonFinTurnoPulsado()"+" currentPlayer: "+currentPlayer+" oponenteCPU: "+oponenteCPU+" comprobandoFinTurno: "+comprobandoFinTurno+" luchando: "+luchando+" atacando: "+atacando+" uniendoTropas: "+uniendoTropas+" ocupandoEstado: "+ocupandoEstado+" numTropaNueva: "+numTropaNueva);
+        //Si le toca a la máquina y es su turno no hacemos nada
+        if( oponenteCPU && currentPlayer == 2)
+            return;
+
         //audioSourceMapa.PlayOneShot(clickBoton);
-        elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.5f);
+        elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
         //Si se está a mitad de una acción no finalizamos turno
         if( luchando || atacando || uniendoTropas || ocupandoEstado || numTropaNueva != -1)
             return;
+        foreach(GameObject elEjercito in jugadores[currentPlayer].ejercitos){
+            elEjercito.GetComponent<Ejercito>().haMovido = true;
+        }
+        elMapaReino.GetComponent<MapaReino>().NoResaltarNingunEstado();
+        estadoSeleccionado = false;
+        //Debug.Log("Fin del turno del player: "+ currentPlayer+" Compruebo su oro y si ha ganado una unidad para que la coloque.");
         ComprobarFinTurno();
     }
 
@@ -941,31 +946,33 @@ PlayerPrefs.SetInt("numPlayers", 1);
         Debug.Log("Fin del turno del player: "+ currentPlayer+" Compruebo su oro y si ha ganado una unidad para que la coloque.");
         //Tiene suficientes territorios y no hay que colocar tropa ==> Le damos oro y si es necesario generamos la nueva tropa.
         int territoriosConquistados = GetTerritoriosConquistados(currentPlayer);
-        if (  territoriosConquistados >= 5 && numTropaNueva ==  -1 ){  
+        if (  territoriosConquistados >= 5 && numTropaNueva ==  -1 ){
+Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+numTropaNueva+" currentPlayer: "+currentPlayer+" oponenteCPU: "+oponenteCPU+" comprobandoFinTurno: "+comprobandoFinTurno+" luchando: "+luchando+" atacando: "+atacando+" uniendoTropas: "+uniendoTropas+" ocupandoEstado: "+ocupandoEstado);
             jugadores[currentPlayer].cantidadOro++;
-            elCanvasUI_Mapa.GetComponent<CanvasUI_MapaController>().EstablecerOroPlayers(jugadores[1].cantidadOro,jugadores[2].cantidadOro);
+
             Debug.Log("*** PENDIENTE *** El player "+currentPlayer+" tiene: "+jugadores[currentPlayer].cantidadOro+" oro. Le damos +1 ORO y si tiene suficiente una unidad que deberá colocar.");
             //Tiene suficiente oro para comprar una unidad y tiene algún territorio sin ocupar. Se la damos y que la coloque antes de seguir el turno
-            if( jugadores[currentPlayer].cantidadOro>=5 && territoriosConquistados > jugadores[currentPlayer].numEjercitos){
+            if( jugadores[currentPlayer].cantidadOro>=5 && territoriosConquistados > jugadores[currentPlayer].ejercitos.Count){
                 Debug.Log("El player: "+currentPlayer+" tiene suficiente oro: "+jugadores[currentPlayer].cantidadOro+" Le damos tropa.");
                 jugadores[currentPlayer].cantidadOro -= 5;
                 AddEjercito(currentPlayer);
-                jugadores[currentPlayer].numEjercitos++;
 
                 //Es el turno de la IA, colocamos la tropa 
                 if( contadorTurnos%2 == 0 && oponenteCPU){
                     List<int> indicesCapitalesVacias = elMapaReino.GetComponent<MapaReino>().GetCapitalesDesocupadasPlayer(2);
-                //La colocamos en una de las capitales vacías aleatoriamente
-                HexTile laTile = elMapaReino.GetComponent<MapaReino>().GetTileCapital(indicesCapitalesVacias[UnityEngine.Random.Range(0,indicesCapitalesVacias.Count-1)]);
-                ColocarEjercito(laTile);
+                    //La colocamos en una de las capitales vacías aleatoriamente
+                    HexTile laTile = elMapaReino.GetComponent<MapaReino>().GetTileCapital(indicesCapitalesVacias[UnityEngine.Random.Range(0,indicesCapitalesVacias.Count-1)]);
+                    ColocarEjercito(laTile);
                 }
             }
         }
+        elCanvasUI_Mapa.GetComponent<CanvasUI_MapaController>().EstablecerOroPlayers(jugadores[1].cantidadOro,jugadores[2].cantidadOro);
         if (numTropaNueva == -1)
             FinalizarTurno();
     }
 
     public void FinalizarTurno(){
+        elCanvasUI_Mapa.GetComponent<CanvasUI_MapaController>().EstablecerOroPlayers(jugadores[1].cantidadOro,jugadores[2].cantidadOro);
         //Si es el turno de la IA llamamos a su comprobación.
         Debug.Log("Finalizar turno begin");
         if( contadorTurnos%2==0 && oponenteCPU ){
@@ -1090,7 +1097,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
         elEjercito.GetComponent<Ejercito>().haMovido = true;
         path.Reverse();
         elEjercito.GetComponent<Ejercito>().SetPath(path);
-        elSoundManager.PlayMusic(elSoundManager.musicaUnidadSeleccionada[1],true,0.5f,"UnidadSeleccionadaP1Source");        
+        elSoundManager.PlayMusic(elSoundManager.musicaUnidadSeleccionada[1],true,0.5f,"UnidadSeleccionadaP1Source");
     }
 
     //Inicializa las tropas del ejército para poder moverlas
@@ -1132,10 +1139,10 @@ PlayerPrefs.SetInt("numPlayers", 1);
     private void mostrarInfoJuego(){
         string mensaje = "currentPlayer: "+currentPlayer;//+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito;
         if( ejercitoSeleccionado != null)
-            mensaje+="\nplayer: "+ejercitoSeleccionado.GetComponent<Ejercito>().numPlayer+" ejército seleccionado: "+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito;
+            mensaje+="\nplayer: "+ejercitoSeleccionado.GetComponent<Ejercito>().numPlayer;//+" ejército seleccionado: "+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito;
         mensaje +="\n celdasRestantes: "+celdasRestantes+" atacando: "+atacando;
         mensaje +="\n uniendoTropas: "+ uniendoTropas+" ocupandoEstado: "+ocupandoEstado;
-        mensaje +="\n numEjercitosP1: "+jugadores[1].numEjercitos+" numEjercitosP2: "+jugadores[2].numEjercitos;
+        mensaje +="\n numEjercitosP1: "+jugadores[1].ejercitos.Count+" numEjercitosP2: "+jugadores[2].ejercitos.Count;
         mensaje +="\n stop:"+stop+" editandoMapa: "+editandoMapa+" numEstadoActual: "+numEstadoActual;
         mensaje +="\n numEstadoAnterior: "+numEstadoAnterior+" estadoSeleccionado: "+estadoSeleccionado;
         mensaje +="\nCapital  -  propietario  -  indexEjercito\n";
@@ -1143,9 +1150,14 @@ PlayerPrefs.SetInt("numPlayers", 1);
         Capital laCapital;
         for( int i=1 ; i<elMapa.capitalesEstados.Count; i++){
             laCapital = elMapa.capitalesEstados[i].GetComponent<Capital>();
+
             string elIndiceEjercito = "vacío.";
-            if( laCapital.ejercitoOcupante != null)
-                elIndiceEjercito = laCapital.ejercitoOcupante.GetComponent<Ejercito>().indiceEjercito.ToString();
+            if( laCapital.ejercitoOcupante != null){
+                if(laCapital.propietario == 1)
+                    elIndiceEjercito = jugadores[1].ejercitos.IndexOf(laCapital.ejercitoOcupante).ToString();
+                if(laCapital.propietario == 2)
+                    elIndiceEjercito = jugadores[2].ejercitos.IndexOf(laCapital.ejercitoOcupante).ToString();
+            }
             mensaje += "     "+ i+"      -       "+ laCapital.propietario +"       -       "+elIndiceEjercito+"\n";
         }
         elCanvasUI_Mapa.transform.GetChild(0).GetComponent<TMP_Text>().text = "Info Juego:\n"+mensaje;
@@ -1158,6 +1170,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
         else
             jugadores[2].ejercitos.Remove(elEjercito);
     }
+
     //Obtener la cantidad de territorios conquistados por el jugador indicado para generar
     //el oro que corresponda
     private int GetTerritoriosConquistados(int numPlayer){
@@ -1170,7 +1183,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
         return territoriosConquistados;
     }
 
-    private void AddEjercito(int numPlayer){
+    private void AddEjercitoOLD(int numPlayer){
         //Añadir un ejército a la lista del player
         //Resaltar todos los territorios del player para colocar la unidad
         //      La coloque en un territorio vacío u ocupado para unirlas es igual porque es el final de su turno
@@ -1182,7 +1195,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
 
         Debug.Log("En AddEjercito player "+numPlayer+". Tamaño array: "+jugadores[numPlayer].ejercitos.Count+" el índiceEjercito: "+indiceEjercito);
         jugadores[numPlayer].ejercitos[indiceEjercito].GetComponent<Ejercito>().numPlayer = numPlayer;
-        jugadores[numPlayer].ejercitos[indiceEjercito].GetComponent<Ejercito>().indiceEjercito = indiceEjercito;
+//        jugadores[numPlayer].ejercitos[indiceEjercito].GetComponent<Ejercito>().indiceEjercito = indiceEjercito;
         jugadores[numPlayer].ejercitos[indiceEjercito].transform.position = highlight.transform.position+ new Vector3(0,1f,0);
         jugadores[numPlayer].ejercitos[indiceEjercito].transform.SetParent(highlight.transform,true);
         numTropaNueva = indiceEjercito;
@@ -1201,9 +1214,45 @@ PlayerPrefs.SetInt("numPlayers", 1);
                 Debug.Log("¿Qué pasa aquí?: estado: "+i+" laCapital.propietario: "+laCapital.propietario+ " laCapital.jercitoOcupante: "+laCapital.ejercitoOcupante);
                 elMapaReino.GetComponent<MapaReino>().SeleccionarSoloEstado(i);
             }
-        }
-        
+        }   
     }
+
+    //El nuevo ejército se añade a la lista de ejércitos
+    private void AddEjercito(int numPlayer)
+    {
+        // Crear el nuevo ejército
+        GameObject nuevoEjercito = Instantiate(modeloEjercito, new Vector3(0, 0, 0), Quaternion.identity);
+        nuevoEjercito.GetComponent<Ejercito>().GetComponentInChildren<SkinnedMeshRenderer>().material = materialesEjercito[numPlayer];
+
+        // Añadir el nuevo ejército al final de la lista
+        jugadores[numPlayer].ejercitos.Add(nuevoEjercito);
+        int indiceEjercito = jugadores[numPlayer].ejercitos.Count - 1;
+
+        // Configurar el nuevo ejército
+        Debug.Log("En AddEjercito player " + numPlayer + ". Tamaño array: " + jugadores[numPlayer].ejercitos.Count + " el índiceEjercito: " + indiceEjercito);
+        nuevoEjercito.GetComponent<Ejercito>().numPlayer = numPlayer;
+        //nuevoEjercito.GetComponent<Ejercito>().indiceEjercito = indiceEjercito;
+        nuevoEjercito.transform.position = highlight.transform.position + new Vector3(0, 1f, 0);
+        nuevoEjercito.transform.SetParent(highlight.transform, true);
+
+        // Actualizar el estado para colocar el ejército
+        numTropaNueva = indiceEjercito;
+
+        // Resaltar los estados disponibles para colocar el ejército
+        elMapaReino.GetComponent<MapaReino>().NoResaltarNingunEstado();
+        for (int i = 1; i < elMapaReino.GetComponent<MapaReino>().capitalesEstados.Count(); i++)
+        {
+            Capital laCapital = elMapaReino.GetComponent<MapaReino>().capitalesEstados[i].GetComponent<Capital>();
+            if (laCapital.propietario == numPlayer && laCapital.ejercitoOcupante == null)
+            {
+                Debug.Log("Estado disponible para colocar ejército: " + i);
+                elMapaReino.GetComponent<MapaReino>().SeleccionarSoloEstado(i);
+            }
+        }
+
+    }
+
+
 
     public void ColocarEjercito(HexTile tile){
         Debug.Log("numTropaNueva: "+numTropaNueva+ " a la tile: "+tile.name);
@@ -1237,24 +1286,24 @@ PlayerPrefs.SetInt("numPlayers", 1);
 
     public void VolverPantallaInicial(){
         if(combateActivo)
-            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.5f);
+            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
         else
-            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.5f);
+            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
         SceneManager.LoadScene("Presentacion_y_menus", LoadSceneMode.Single);
     }
 
     public void ContinuarPartida(){
         Time.timeScale = 1;
         if(combateActivo)
-            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.5f);//audioSourceBatalla.PlayOneShot(clickBoton);
+            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);//audioSourceBatalla.PlayOneShot(clickBoton);
         else
-            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.5f);//audioSourceMapa.PlayOneShot(clickBoton);
+            elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);//audioSourceMapa.PlayOneShot(clickBoton);
         elCanvasOpciones.gameObject.SetActive(false);
     }
 
     public void QuitGame(){
         //audioSourceBatalla.PlayOneShot(clickBoton);
-        elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.5f);
+        elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
         Application.Quit();
     }
 

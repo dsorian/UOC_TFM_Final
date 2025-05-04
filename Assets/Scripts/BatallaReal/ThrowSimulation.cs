@@ -66,9 +66,11 @@ public class ThrowSimulation : MonoBehaviour
                 }
                 //Para no volver a disparar
                 disparar = false;
-                target.position = projectileOrigin.position;
-                /*projectile.*/transform.SetParent(miCatapulta.transform);
-                /*projectile.*/GetComponent<ParticleSystem>().Stop();
+                if( miCatapulta != null){
+                    target.position = projectileOrigin.position;
+                    /*projectile.*/transform.SetParent(miCatapulta.transform);
+                    /*projectile.*/GetComponent<ParticleSystem>().Stop();
+                }
                 
             }
         }

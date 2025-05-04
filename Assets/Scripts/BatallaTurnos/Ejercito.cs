@@ -17,7 +17,7 @@ public class Ejercito : MonoBehaviour
     protected bool gotPath;
     protected Vector3 targetPosition;
     public int numPlayer = 1;   //Player al que pertenece
-    public int indiceEjercito;  //Número de ejército
+    //public int indiceEjercito;  //Número de ejército
     public bool haMovido = false;
     public int numCatapulta = 1;  //Cantidad de catapultas
     public int numInfanteria = 6;  //Cantidad de infantería

@@ -219,9 +219,11 @@ public class Unidad : MonoBehaviour
         if( muerto)
             return;
  //       Debug.Log("Esta unidad tiene estos hijos: "+this.gameObject.transform.childCount);
-        if( this.gameObject.transform.childCount < 12)//El proyectil no está listo
+        if( this.gameObject.transform.childCount < 13)//El proyectil no está listo
             return;
-
+        //Para que la catapulta no se dispare a sí misma
+        if( fuerzaDisparo < 20) 
+            fuerzaDisparo = 20f;
         if(player == "Player2"){
             fuerzaDisparo = -fuerzaDisparo;
         }
@@ -229,6 +231,8 @@ public class Unidad : MonoBehaviour
         Debug.Log("DispararProyectil: "+fuerzaDisparo);
         elThrowSimulation.target.transform.position += new Vector3(fuerzaDisparo,-7,0);
         elThrowSimulation.disparar = true;
+        //Para que el proyectil sepa si ha sido disparado y pueda matar unidades al colisionar
+        transform.GetChild(12).GetComponent<ProyectilCatapulta>().disparado = true;
         transform.GetChild(12).GetComponent<ProyectilCatapulta>().transform.SetParent(null);
         
         idle = false;

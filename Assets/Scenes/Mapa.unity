@@ -3354,6 +3354,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  numEjercitosP1: 2
+  numEjercitosP2: 2
   oponenteCPU: 0
   combateActivo: 0
   vencedor: 
