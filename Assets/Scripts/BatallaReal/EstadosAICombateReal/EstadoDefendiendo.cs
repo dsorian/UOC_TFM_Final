@@ -15,7 +15,7 @@ public class EstadoDefendiendo : IEstadoUnidad
 
     public void ActualizaEstado()
     {
-        //Debug.Log("EstadoAndando: Actualizando Estadoooo....");
+        //Debug.Log("IA Real: EstadoAndando: Actualizando Estadoooo....");
         tiempoActualDecision += Time.deltaTime;
         //Cada tiempoDecision comprueba si hay que hacer alguna otra acción (el destino se ha movido, o lo que sea)
         
@@ -31,24 +31,24 @@ public class EstadoDefendiendo : IEstadoUnidad
     }
 
     public void AEstadoAndando(){
-        Debug.Log("EstadoDefendiendo: A EstadoAndando...");
+        Debug.Log("IA Real: EstadoDefendiendo: A EstadoAndando...");
     }
 
     public void AEstadoEligiendo(){
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
-        Debug.Log("EstadoMuerto: A EstadoEligiendo...");
+        Debug.Log("IA Real: EstadoMuerto: A EstadoEligiendo...");
     }
 
     public void AEstadoAtacando(){
-        Debug.Log("Unidad: ... de EstadoDefendiendo a aEstadoAtacando.");
+        Debug.Log("IA Real: Unidad: ... de EstadoDefendiendo a aEstadoAtacando.");
     }
 
     public void AEstadoDefendiendo(){
-        Debug.Log("Unidad: ... de EstadoDefendiendo a estadodefendiendo");
+        Debug.Log("IA Real: Unidad: ... de EstadoDefendiendo a estadodefendiendo");
     }
 
     public void AEstadoDerrotado(){
-        Debug.Log("EstadoDefendiendo: AEstadoDerrotado");
+        Debug.Log("IA Real: EstadoDefendiendo: AEstadoDerrotado");
     }
 }

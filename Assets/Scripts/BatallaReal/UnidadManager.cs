@@ -709,7 +709,7 @@ Debug.Log("Poniendo skin al caballero de "+player + " - " + material1Unidades.na
     public bool IAPuedeAtacar(){
         bool puedeAtacarAlguien = false;
         foreach(GameObject laUnidad in unidades){
-            if( laUnidad != null && laUnidad.GetComponent<Unidad>().objetivo !=null && laUnidad.GetComponent<Unidad>().DistanciaToObjetivo()< 3.5f){
+            if( laUnidad != null && laUnidad.GetComponent<Unidad>().objetivo !=null && laUnidad.GetComponent<Unidad>().DistanciaToObjetivo()< 5.5f){
                 puedeAtacarAlguien = true;
             }
         }

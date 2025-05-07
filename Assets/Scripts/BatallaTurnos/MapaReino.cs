@@ -349,7 +349,11 @@ Debug.Log("¿Capital de estado: "+numEstado +" ocupada por player: "+numPlayer+"
                 listaCapitales.Add(i);
             }
         }
-        return listaCapitales;
+        if( listaCapitales.Count == 0){
+            return null;
+        }else{
+            return listaCapitales;
+        }
     }
 
     public List<int> GetCapitalesPlayer(int numPlayer){

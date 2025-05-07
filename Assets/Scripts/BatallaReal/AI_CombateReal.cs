@@ -122,9 +122,14 @@ public class AI_CombateReal : MonoBehaviour
                 }
             }
         }
-        if( distancia > 45)
+        if( distancia > 35)
             unidadAmenazada = -1; //No hay ningún enemigo cerca
         
         return unidadAmenazada;
+    }
+
+    //Para que cuando comience el combate elija una unidad que no esté muerta
+    public void EscogerUnidadObjetivo(){
+        elBatallaManager.unidadSeleccionadaP2 = elBatallaManager.SiguienteUnidadManagerP2();
     }
 }

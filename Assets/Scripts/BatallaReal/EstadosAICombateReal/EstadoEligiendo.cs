@@ -17,29 +17,29 @@ public class EstadoEligiendo : IEstadoUnidad
     {
         if( ! fsmAIController.combateRealActivo )
             return;
-        Debug.Log("EstadoEligiendo 00: Inicio del bucle ActualizaEstado");
+        Debug.Log("IA Real: EstadoEligiendo 00: Inicio del bucle ActualizaEstado");
         tiempoActualDecision += Time.deltaTime;
         //Cada tiempoDecision comprueba si hay que hacer alguna otra acción (el destino se ha movido, o lo que sea)
         fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().PararUnidades();
         
         if( tiempoActualDecision > tiempoDecision ){
             tiempoActualDecision = 0;
-            Debug.Log("EstadoEligiendo 01 tomando decisión. Unidad controlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
+            Debug.Log("IA Real: EstadoEligiendo 01 tomando decisión. Unidad controlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
             fsmAIController.elBatallaManager.unidadSeleccionadaP2 = fsmAIController.elBatallaManager.SiguienteUnidadManagerP2();
             if( fsmAIController.elBatallaManager.unidadSeleccionadaP2 == -1 )
                 AEstadoDerrotado();
-            Debug.Log("EstadoEligiendo 02: Toca decidir. unidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
+            Debug.Log("IA Real: EstadoEligiendo 02: Toca decidir. unidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
             if( fsmAIController.RestoUnidadesEstanIdle(fsmAIController.elBatallaManager.unidadSeleccionadaP2) ){  //A ver qué nos hará hacer una cosa u otra, de momento siempre echamos a andar
-                Debug.Log("EstadoEligiendo 03:    Resto de unidades Idle, me muevo "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" - "+fsmAIController.numUnidadObjetivo);
+                Debug.Log("IA Real: EstadoEligiendo 03:    Resto de unidades Idle, me muevo "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" - "+fsmAIController.numUnidadObjetivo);
                 AEstadoAndando();
             }else{
-                Debug.Log("EstadoEligiendo 04:    Alguien está haciendo algo. No hago nada.");
+                Debug.Log("IA Real: EstadoEligiendo 04:    Alguien está haciendo algo. No hago nada.");
             }
         }
     }
 
     public void AEstadoAndando(){
-        Debug.Log("estadoEligiendo: A EstadoAndando... elBatallaManager.unidadSeleccionadaP2: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
+        Debug.Log("IA Real: estadoEligiendo: A EstadoAndando... elBatallaManager.unidadSeleccionadaP2: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
                 fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
         if(fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 2)
@@ -63,23 +63,23 @@ public class EstadoEligiendo : IEstadoUnidad
     }
 
     public void AEstadoEligiendo(){
-        Debug.Log("EstadoEligiendo: A EstadoEligiendo...");
+        Debug.Log("IA Real: EstadoEligiendo: A EstadoEligiendo...");
     }
 
     public void AEstadoAtacando(){
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
-        Debug.Log("Unidad: ... de estadoEligiendo a aEstadoAtacando.");
+        Debug.Log("IA Real: Unidad: ... de estadoEligiendo a aEstadoAtacando.");
     }
 
     public void AEstadoDefendiendo(){
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
-        Debug.Log("Unidad: ... de estadoEligiendo a estadodefendiendo");
+        Debug.Log("IA Real: Unidad: ... de estadoEligiendo a estadodefendiendo");
     }
 
     public void AEstadoDerrotado(){
-        Debug.Log("AEstadoDerrotado");
+        Debug.Log("IA Real: AEstadoDerrotado");
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
         fsmAIController.estadoActual = fsmAIController.estadoDerrotado;

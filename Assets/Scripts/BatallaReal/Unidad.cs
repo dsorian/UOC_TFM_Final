@@ -188,6 +188,11 @@ public class Unidad : MonoBehaviour
 
     public void Morir(){
         Debug.Log("Unidad.Morir(): Unidad"+miUnidadManager.tipoUnidad+" de "+player+" ha muerto.");
+        if(miUnidadManager.tipoUnidad == 0){
+            if(elThrowSimulation != null){
+                elThrowSimulation.DestruirProyectil();
+            }
+        }
         miUnidadManager.elBatallaManager.elSoundManager.PlayRandomSound(miUnidadManager.elBatallaManager.elSoundManager.sonidosMuerte, 0.8f,"Batalla");
         miNavMeshAgent.isStopped = true;
         idle = false;

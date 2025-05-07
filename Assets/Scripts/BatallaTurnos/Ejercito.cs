@@ -77,10 +77,17 @@ public class Ejercito : MonoBehaviour
         }else{
             anim.SetBool("idle", false);
             anim.SetBool("andando", true);
-            currentTile = currentPath[0];
+            if(currentPath.Count < 4){
+                currentTile = currentPath[0];
+                nextTile = currentPath[1];
+            }
+            else{//Para que vaya más rápido al moverse en trayectos largos
+                currentTile = currentPath[1];
+                nextTile = currentPath[2];
+            }
             //transform.LookAt(currentTile.transform.position + new Vector3(0f,1.0f,0f));
 
-            nextTile = currentPath[1];
+
             //Nos movemos
             this.transform.position = nextTile.transform.position + new Vector3(0,0f,0);
 
@@ -93,7 +100,12 @@ public class Ejercito : MonoBehaviour
             }*/
             //targetPosition = nextTile.transform.position + new Vector3(0,1f,0);
             gotPath = true;
-            currentPath.RemoveAt(0);
+            if(currentPath.Count < 4)  //Si es un camino corto, me muevo a la siguiente casilla
+                currentPath.RemoveAt(0);
+            else{ //Si es un camino largo, me he movido dos lugares
+                currentPath.RemoveAt(0);
+                currentPath.RemoveAt(1);
+            }
    //         TileManager.instance.playerPos = nextTile.cubeCoordinate;
             UpdateLineRenderer(currentPath);
             //Debug.Log("UNidad en tránsito");

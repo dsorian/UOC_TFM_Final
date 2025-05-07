@@ -89,6 +89,7 @@ public class TileManager : MonoBehaviour
     //Para la AI
     public AI_Turnos_SistemaReglas la_AI_Turnos;public AI_CombateReal la_AI_Real;
 
+    private float deltaTimeParaFPS = 0.0f;
     //Sonidos
     public SoundManager elSoundManager;
     //public AudioClip clickBoton;    
@@ -130,6 +131,8 @@ public class TileManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
+        
         StartCoroutine(Tick());
 
         Time.timeScale = 1;
@@ -184,8 +187,8 @@ public class TileManager : MonoBehaviour
             posIni1 = 9;
             posIni2 = 3;
         }else{
-            posIni1 = UnityEngine.Random.Range(1,11);  //Para debug poner 9
-            posIni2 = UnityEngine.Random.Range(14,21);  //Para debug poner 3
+            posIni1 = 9;//UnityEngine.Random.Range(1,11);  //Para debug poner 9
+            posIni2 = 3;//UnityEngine.Random.Range(14,21);  //Para debug poner 3
         }
         for(int i=0; i<jugadores[1].ejercitos.Count;i++){
             auxVector2 = elMapaReino.GetComponent<MapaReino>().listaEstados[posIni1].GetCoordsCapital();
@@ -283,6 +286,9 @@ PlayerPrefs.SetInt("numPlayers", 1);
     // Update is called once per frame
     void Update()
     {
+        //Para mostrar FPS
+        deltaTimeParaFPS += (Time.deltaTime - deltaTimeParaFPS) * 0.1f;
+
         if ( Input.GetKeyUp(KeyCode.O)){
             Debug.Log("Opción O pulsada: "+AccionActiva());
         }
@@ -538,7 +544,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
                         }else{
                             Debug.Log("Para aquí en un bucle hasta que acabe el combate y luego seguir");
                             //
-                            //COMBATE REAL
+                            //**COMBATE REAL**
                             //
                             //Pasamos la info de las unidades para que se generen los ejércitos que toque
                             //MIRAR CÓMO SE HACE EN EL DE TURNOS PORQUE ES LO MISMO SALVO QUE EN LUGAR DE REPRODUCIR LA ANIMACIÓN DE LUCHA
@@ -576,6 +582,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
                                 elCampoBatallaManager.GetComponent<CampoBatallaTerrain>().InicializarTerreno(tipoEscenario);
                             }
                             la_AI_Real.combateRealActivo = true;
+                            la_AI_Real.EscogerUnidadObjetivo();
                             combateActivo = true;
                             //Llamaremos a batallaManager para que haga la batallaStartCoroutine(TiempoCombateReal());
                             while( combateActivo ){
@@ -952,8 +959,8 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
 
             Debug.Log("*** PENDIENTE *** El player "+currentPlayer+" tiene: "+jugadores[currentPlayer].cantidadOro+" oro. Le damos +1 ORO y si tiene suficiente una unidad que deberá colocar.");
             //Tiene suficiente oro para comprar una unidad y tiene algún territorio sin ocupar. Se la damos y que la coloque antes de seguir el turno
-            if( jugadores[currentPlayer].cantidadOro>=5 && territoriosConquistados > jugadores[currentPlayer].ejercitos.Count){
-                Debug.Log("El player: "+currentPlayer+" tiene suficiente oro: "+jugadores[currentPlayer].cantidadOro+" Le damos tropa.");
+            if( elMapaReino.GetComponent<MapaReino>().GetCapitalesDesocupadasPlayer(currentPlayer) != null && jugadores[currentPlayer].cantidadOro>=5 && territoriosConquistados > jugadores[currentPlayer].ejercitos.Count){
+                Debug.Log("El player: "+currentPlayer+" tiene suficiente oro: "+jugadores[currentPlayer].cantidadOro+" y reinos disponibles: "+elMapaReino.GetComponent<MapaReino>().GetCapitalesDesocupadasPlayer(currentPlayer).Count+"  Le damos tropa.");
                 jugadores[currentPlayer].cantidadOro -= 5;
                 AddEjercito(currentPlayer);
 
@@ -1137,7 +1144,10 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
     }
 
     private void mostrarInfoJuego(){
-        string mensaje = "currentPlayer: "+currentPlayer;//+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito;
+        string mensaje = "";
+        float fps = 1.0f / deltaTimeParaFPS;
+        mensaje += "FPS: "+ Mathf.Ceil(fps).ToString();
+        mensaje += "\ncurrentPlayer: "+currentPlayer;//+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito;
         if( ejercitoSeleccionado != null)
             mensaje+="\nplayer: "+ejercitoSeleccionado.GetComponent<Ejercito>().numPlayer;//+" ejército seleccionado: "+ejercitoSeleccionado.GetComponent<Ejercito>().indiceEjercito;
         mensaje +="\n celdasRestantes: "+celdasRestantes+" atacando: "+atacando;

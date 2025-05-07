@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
-    -A veces la IA no mueve nada hasta que le matan la catapulta (en el modo batalla real)
-    -La catapulta del player 2 no hace la animación de disparo
+    SOLVED -A veces la IA no mueve nada hasta que le matan la catapulta (en el modo batalla real)
+    SOLVED -La catapulta del player 2 no hace la animación de disparo
     -La catapulta del player 2 queda muerta pero la unidadManager sigue como activa y se queda sin mover nada.
-    -La catapulta da error si pulsas mientras el proyectil está en vuelo (en el throwSimulator)
+    SOLVED -La catapulta da error si pulsas mientras el proyectil está en vuelo (en el throwSimulator)
+    -La cortinilla a veces repite el cierre
+    -El proyectiCatapulta se queda en el escneario cuando se acaba el combate y no se destruye (hay que destruirlo)
 
     -Combate:
         -Los caballos se quedan atascados al atacar repetidamente y la animación se queda congelada.

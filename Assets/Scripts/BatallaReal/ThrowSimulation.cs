@@ -75,4 +75,9 @@ public class ThrowSimulation : MonoBehaviour
             }
         }
     }   
+
+    public void DestruirProyectil(){
+        Debug.Log("Destruyendo proyectil"); 
+        Destroy(gameObject);
+    }
 }

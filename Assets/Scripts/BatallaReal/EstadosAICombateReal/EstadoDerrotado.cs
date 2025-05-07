@@ -17,7 +17,7 @@ public class EstadoDerrotado : IEstadoUnidad
 
     public void ActualizaEstado()
     {
-        //Debug.Log("EstadoAndando: Actualizando Estadoooo....");
+        //Debug.Log("IA Real: EstadoAndando: Actualizando Estadoooo....");
         tiempoActualDecision += Time.deltaTime;
         //Cada tiempoDecision comprueba si hay que hacer alguna otra acción (el destino se ha movido, o lo que sea)
         
@@ -28,22 +28,22 @@ public class EstadoDerrotado : IEstadoUnidad
     }
 
     public void AEstadoAndando(){
-        Debug.Log("EstadoDerrotado: A EstadoAndando...");
+        Debug.Log("IA Real: EstadoDerrotado: A EstadoAndando...");
     }
 
     public void AEstadoEligiendo(){
-        Debug.Log("EstadoDerrotado: A EstadoEligiendo...");
+        Debug.Log("IA Real: EstadoDerrotado: A EstadoEligiendo...");
     }
 
     public void AEstadoAtacando(){
-        Debug.Log("Unidad: ... de EstadoDerrotado a aEstadoAtacando.");
+        Debug.Log("IA Real: Unidad: ... de EstadoDerrotado a aEstadoAtacando.");
     }
 
     public void AEstadoDefendiendo(){
-        Debug.Log("Unidad: ... de EstadoDerrotado a estadodefendiendo");
+        Debug.Log("IA Real: Unidad: ... de EstadoDerrotado a estadodefendiendo");
     }
 
     public void AEstadoDerrotado(){
-        Debug.Log("EstadoDerrotado");
+        Debug.Log("IA Real: EstadoDerrotado");
     }
 }

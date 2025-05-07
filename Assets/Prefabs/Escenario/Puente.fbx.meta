@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: ff787df039e9cd74d983f6f7626ad8a8
+guid: 7937f2c2fc7339943adadeb3ff1ec054
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MaterialPuente
+    second: {fileID: 2100000, guid: 721096923c91b894296ddc935c9b09af, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

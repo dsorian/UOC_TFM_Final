@@ -5,6 +5,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+//Revisar el caso de unir tropas porque parece que no las junta y se queda atascado ahí todo el rato
+//Sin acabar el turno
+
 public class AI_Turnos_SistemaReglas : MonoBehaviour{
     // Variables para el estado del juego
     public int soyPlayer = 2;

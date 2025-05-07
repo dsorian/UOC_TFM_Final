@@ -26,40 +26,40 @@ public class EstadoAndando : IEstadoUnidad
         //Cada tiempoDecision comprueba si hay que hacer alguna otra acción (el destino se ha movido, o lo que sea)
         if( tiempoActualDecision > tiempoDecision ){
             tiempoActualDecision = 0;
-            float distanciaObjetivo = 0;
-            Debug.Log("1.-EstadoAndando de: "+fsmAIController.player+": Toca decidir. unidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
+            float distanciaObjetivo;
+            Debug.Log("IA Real: 1.-EstadoAndando de: "+fsmAIController.player+": Toca decidir. unidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
             //CATAPULTA
             if(fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 0 ){
                 //Si tengo el objetivo a tiro, disparo 
                 //Vector3 destinoCatapulta = new Vector3(fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position.x,fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position.y,fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position.z);
 
                 distanciaObjetivo = Vector3.Distance(fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position,fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().GetVanguardia().transform.position);
-                Debug.Log("EEEstadoAndando:    CATAPULTA: La distancia con el objetivo es: "+distanciaObjetivo);
-                Debug.Log("EEEEstadoAndando: "+fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position+"\n           "+fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().GetVanguardia().transform.position);
-                if( distanciaObjetivo < 4.0f ){
-                    Debug.Log("2.-EstadoAndando: de: "+fsmAIController.player+"    CATAPULTA: La distancia con el objetivo es: "+distanciaObjetivo+" Le ataco!!!!");
+                Debug.Log("IA Real: EstadoAndando:    CATAPULTA: La distancia con el objetivo es: "+distanciaObjetivo);
+                Debug.Log("IA Real: EstadoAndando: "+fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position+"\n           "+fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().GetVanguardia().transform.position);
+                if( distanciaObjetivo < 4.1f ){
+                    Debug.Log("IA Real: 2.-EstadoAndando: de: "+fsmAIController.player+"    CATAPULTA: La distancia con el objetivo es: "+distanciaObjetivo+" Le ataco!!!!");
                     AEstadoAtacando();
                     return;
                 }else   
-                    Debug.Log("3.-EstadoAndando de: "+fsmAIController.player+"Estoy lejos, no ataco.");
+                    Debug.Log("IA Real: 3.-EstadoAndando de: "+fsmAIController.player+"Estoy lejos, a: "+distanciaObjetivo+", no ataco.");
             }else{
                 //RESTO DE UNIDADES
                 //Cuando se movía unidadmanager poco a poco
                 //distanciaObjetivo = Vector3.Distance(fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position, fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position);
                 //if( distanciaObjetivo < 3.5f && fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().AlgunaUnidadTieneObjetivoCerca()){
                 if( fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().IAPuedeAtacar()){
-                    Debug.Log("4.-EstadoAndando de: "+fsmAIController.player+":    Unidad: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" Hay unidades que pueden atacar.  Le ataco!!!!");
+                    Debug.Log("IA Real: 4.-EstadoAndando de: "+fsmAIController.player+":    Unidad: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" Hay unidades que pueden atacar.  Le ataco!!!!");
                     AEstadoAtacando();
                 }else{
-                    Debug.Log("5.-EstadoAndando de: "+fsmAIController.player+": No hay unidades que puedan atacar. No hago nada.");
+                    Debug.Log("IA Real: 5.-EstadoAndando de: "+fsmAIController.player+": No hay unidades que puedan atacar. No hago nada.");
                 }
             }
         }
         if(tiempoActualAndando > tiempoAndando){//Llevo el tiempo máximo andando, me paro y que mueva otro
-            Debug.Log("6.-EstadoAndando de: "+fsmAIController.player+":    EstadoAndando, ya he andado suficiente, me voy a elegir: tiempos: "+tiempoActualAndando +" - "+ tiempoAndando+" UnidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
+            Debug.Log("IA Real: 6.-EstadoAndando de: "+fsmAIController.player+":    EstadoAndando, ya he andado suficiente, me voy a elegir: tiempos: "+tiempoActualAndando +" - "+ tiempoAndando+" UnidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
             AEstadoEligiendo();
         }else{
-            Debug.Log("7.-EstadoAndando de: "+fsmAIController.player+":    EstadoAndando, Aún no he andado suficiente. Sigo moviéndome. tiempos: "+tiempoActualAndando +" - "+ tiempoAndando+" UnidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
+            Debug.Log("IA Real: 7.-EstadoAndando de: "+fsmAIController.player+":    EstadoAndando, Aún no he andado suficiente. Sigo moviéndome. tiempoActualAndando: "+tiempoActualAndando +" tiempoAndando: "+ tiempoAndando+" UnidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
             Vector3 vectorConObjetivo;  //Guarda la dirección hacia el objetivo
             if( fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 0 ){     //Unidad es CATAPULTA
                 int unidadObjetivo;
@@ -72,29 +72,29 @@ public class EstadoAndando : IEstadoUnidad
                     unidadObjetivo = 0;
                 Vector3 destinoCatapulta = new Vector3(fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position.x,fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position.y,fsmAIController.unidadesManagerP1[unidadObjetivo].transform.position.z);
                 vectorConObjetivo = destinoCatapulta;//-fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position;
-                Debug.Log("8.-EstadoAndando de: "+fsmAIController.player+": El vectorConObjetivo: "+vectorConObjetivo);
+                Debug.Log("IA Real: 8.-EstadoAndando de: "+fsmAIController.player+": El vectorConObjetivo: "+vectorConObjetivo);
             }else{
                 //Si queremos ir avanzando poco a poco en dirección al objetivo
                 //vectorConObjetivo = fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position-fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position;
                 //El objetivo es directamente la unidad que queremos atacar
-                vectorConObjetivo = fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position + new Vector3(6,0,0);
-                Debug.Log("9.-EstadoAndando de: "+fsmAIController.player+": vectorConObjetivo:"+vectorConObjetivo);
+                vectorConObjetivo = fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position + new Vector3(4,0,0);
+                Debug.Log("IA Real: 9.-EstadoAndando de: "+fsmAIController.player+": vectorConObjetivo:"+vectorConObjetivo);
             }
             //Para que no se quede justo en el sitio sino un poco antes lo muevo 6 unidades a la derecha y se quedarán las vanguardias mirando
             fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position = vectorConObjetivo;
             fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().MoverUnidades();
-            Debug.Log("10.-EstadoAndando de: "+fsmAIController.player+" la unidad: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" Nos estamos moviendo a vectorConObjetivo:"+vectorConObjetivo);
+            Debug.Log("IA Real: 10.-EstadoAndando de: "+fsmAIController.player+" la unidad: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" Nos estamos moviendo a vectorConObjetivo:"+vectorConObjetivo);
         }
     }
 
     public void AEstadoAndando(){
-        Debug.Log("11.-EstadoAndando: A EstadoAndando...");
+        Debug.Log("IA Real: 11.-EstadoAndando: A EstadoAndando...");
     }
 
     public void AEstadoEligiendo(){
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
-        Debug.Log("12.-EstadoAndando: A EstadoEligiendo... que ya he andado suficiente.");
+        Debug.Log("IA Real: 12.-EstadoAndando: A EstadoEligiendo... que ya he andado suficiente.");
         fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().PararUnidades();
         //Para que no anden siempre el mismo tiempo
         tiempoActualAndando = 0 + UnityEngine.Random.Range(0.0f,0.8f);
@@ -105,7 +105,7 @@ public class EstadoAndando : IEstadoUnidad
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
 
-        Debug.Log("13.-EstadoAndando. Unidad: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" ... de estadoAndando a aEstadoAtacando. Inicio el ataque!!!");
+        Debug.Log("IA Real: 13.-EstadoAndando. Unidad: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" ... de estadoAndando a aEstadoAtacando. Inicio el ataque!!!");
         fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().PararUnidades();
         fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().IniciarAtaque();
         fsmAIController.estadoActual = fsmAIController.estadoAtacando;
@@ -114,11 +114,11 @@ public class EstadoAndando : IEstadoUnidad
     public void AEstadoDefendiendo(){
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
-        Debug.Log("14.-Unidad: ... de estadoAndando a estadodefendiendo");
+        Debug.Log("IA Real: 14.-Unidad: ... de estadoAndando a estadodefendiendo");
     }
     public void AEstadoDerrotado(){
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
-        Debug.Log("15.-EstadoDerrotado");
+        Debug.Log("IA Real: 15.-EstadoDerrotado");
     }
 }
