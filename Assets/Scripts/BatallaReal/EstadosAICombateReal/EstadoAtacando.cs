@@ -1,3 +1,5 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +11,10 @@ public class EstadoAtacando : IEstadoUnidad
     private float tiempoActualDecision = 0.25f; //Para contar el tiempo que ha pasado desde la última decisión
     private float tiempoDecision = 0.5f;  //El agente tomará una decisión cada tiempoActualDecision segundos
     private float tiempoActualAtacando = 0.0f;  //Para contar el tiempo que lleva atacando y para en algún momento
-    private float tiempoAtacando = 4.0f; //Atacará sin parar este tiempo
+    private float tiempoAtacando = 4.5f; //Atacará sin parar este tiempo
     private bool catapultaAtacando = false;  //Para saber si la catapulta está cargando
     private bool catapultaDisparando = false;  //Para saber si la catapulta está disparando
+    private bool caballeriaAtacando = false;  //Para saber si la caballería está atacando
     public EstadoAtacando(AI_CombateReal laAI){
         fsmAIController = laAI;
     }
@@ -24,7 +27,7 @@ public class EstadoAtacando : IEstadoUnidad
         if( tiempoActualDecision > tiempoDecision ){
             tiempoActualDecision = 0;
             Debug.Log("IA Real: EstadoAtacando. Toca decidir tiempoActualAtacando: "+tiempoActualAtacando+" elBatallaManager.unidadSeleccionadaP2: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2+" catapultaAtacando: "+catapultaAtacando);
-            if(catapultaDisparando){
+            if(catapultaDisparando ){
                 AEstadoEligiendo();
             }else{
                 if( fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 0){
@@ -64,7 +67,10 @@ public class EstadoAtacando : IEstadoUnidad
                     }else{
                         Debug.Log("IA Real: EstadoAtacando:  No he atacado, iniciando ataque. unidadControlada: "+fsmAIController.elBatallaManager.unidadSeleccionadaP2);
                         fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().IniciarAtaque();
-                    }
+                        if(fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 2)
+                            caballeriaAtacando = true;
+                        else
+                            caballeriaAtacando = false;}
                 }
             }
         }
@@ -74,7 +80,6 @@ public class EstadoAtacando : IEstadoUnidad
         Debug.Log("IA Real: EstadoAtacando: A EstadoAndando...");
         tiempoActualAtacando = 0;
         catapultaAtacando = false;
-        catapultaDisparando = false;
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
                 fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
         if(fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 2)
@@ -98,6 +103,7 @@ public class EstadoAtacando : IEstadoUnidad
         tiempoActualAtacando = 0;
         catapultaAtacando = false;
         catapultaDisparando = false;
+        caballeriaAtacando = false;
         fsmAIController.estadoActual = fsmAIController.estadoEligiendo;
     }
 
@@ -107,7 +113,6 @@ public class EstadoAtacando : IEstadoUnidad
 
     public void AEstadoDefendiendo(){
         catapultaAtacando = false;
-        catapultaDisparando = false;
         if( fsmAIController.elBatallaManager.elSoundManager.UnidadSeleccionadaP2Source.isPlaying)
             fsmAIController.elBatallaManager.elSoundManager.StopMusic("UnidadSeleccionadaP2Source");
         Debug.Log("IA Real: Unidad: ... de EstadoAtacando a estadodefendiendo");
@@ -116,7 +121,6 @@ public class EstadoAtacando : IEstadoUnidad
         Debug.Log("IA Real: EstadoAtacando: AEstadoDerrotado");
         tiempoActualAtacando = 0;
         catapultaAtacando = false;
-        catapultaDisparando = false;
         fsmAIController.estadoActual = fsmAIController.estadoDerrotado;
     }
 }

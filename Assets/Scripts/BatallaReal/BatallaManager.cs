@@ -136,20 +136,20 @@ public class BatallaManager : MonoBehaviour
             posInicial = new Vector3(posIniCatapultaP1.x,80,posIniCatapultaP1.y);
             unidadesManagerP1[0] = Instantiate(modeloUnidadManager, posInicial , new Quaternion());
             if( nCatapultaP1 == 0)
-                unidadesManagerP1[0].GetComponent<UnidadManager>().destruida = true;
+                unidadesManagerP1[0].GetComponent<UnidadManager>().muerto = true;
             Debug.Log("Creando catapultas P1.");
             unidadesManagerP1[0].GetComponent<UnidadManager>().CrearUnidades(modeloCatapulta,nCatapultaP1,materialesEjercito[0],materialesEjercito[1],1,true,0);
             
             posInicial = new Vector3(posIniInfanteriaP1.x,80,posIniInfanteriaP1.y);
             unidadesManagerP1[1] = Instantiate(modeloUnidadManager,posInicial , new Quaternion());
             if( nInfanteriaP1 == 0)
-                unidadesManagerP1[1].GetComponent<UnidadManager>().destruida = true;
+                unidadesManagerP1[1].GetComponent<UnidadManager>().muerto = true;
             unidadesManagerP1[1].GetComponent<UnidadManager>().CrearUnidades(modeloInfanteria,nInfanteriaP1,materialesEjercito[4],null,1,false,1);
 
             posInicial = new Vector3(posIniCaballeriaP1.x,80,posIniCaballeriaP1.y);
             unidadesManagerP1[2] = Instantiate(modeloUnidadManager,posInicial , new Quaternion());
             if( nCaballeriaP1 == 0)
-                unidadesManagerP1[2].GetComponent<UnidadManager>().destruida = true;
+                unidadesManagerP1[2].GetComponent<UnidadManager>().muerto = true;
             unidadesManagerP1[2].GetComponent<UnidadManager>().CrearUnidades(modeloCaballeria,nCaballeriaP1,materialesEjercito[6],materialesEjercito[7],1,false, 2);
             unidadSeleccionadaP1 = 0;
             if( nCatapultaP1 == 0)
@@ -163,20 +163,20 @@ public class BatallaManager : MonoBehaviour
             posInicial = new Vector3(posIniCatapultaP2.x,80,posIniCatapultaP2.y);
             unidadesManagerP2[0] = Instantiate(modeloUnidadManager,posInicial , new Quaternion());
             if( nCatapultaP2 == 0)
-                unidadesManagerP2[0].GetComponent<UnidadManager>().destruida = true;
+                unidadesManagerP2[0].GetComponent<UnidadManager>().muerto = true;
             unidadesManagerP2[0].GetComponent<UnidadManager>().CrearUnidades(modeloCatapulta,nCatapultaP2,materialesEjercito[2],materialesEjercito[3],2,true,0);
             unidadSeleccionadaP2 = 0;
 
             posInicial = new Vector3(posIniInfanteriaP2.x,80,posIniInfanteriaP2.y);
             unidadesManagerP2[1] = Instantiate(modeloUnidadManager,posInicial ,  new Quaternion());//* Quaternion.Euler (0f, 180f, 0f)
             if( nInfanteriaP2 == 0)
-                unidadesManagerP2[1].GetComponent<UnidadManager>().destruida = true;
+                unidadesManagerP2[1].GetComponent<UnidadManager>().muerto = true;
             unidadesManagerP2[1].GetComponent<UnidadManager>().CrearUnidades(modeloInfanteria,nInfanteriaP2,materialesEjercito[5],null,2,false,1);
 
             posInicial = new Vector3(posIniCaballeriaP2.x,80,posIniCaballeriaP2.y);
             unidadesManagerP2[2] = Instantiate(modeloUnidadManager,posInicial , new Quaternion());
             if( nCaballeriaP2 == 0)
-                unidadesManagerP2[2].GetComponent<UnidadManager>().destruida = true;
+                unidadesManagerP2[2].GetComponent<UnidadManager>().muerto = true;
             unidadesManagerP2[2].GetComponent<UnidadManager>().CrearUnidades(modeloCaballeria,nCaballeriaP2,materialesEjercito[8],materialesEjercito[9],2,false,2);
         }
 
@@ -197,12 +197,12 @@ public class BatallaManager : MonoBehaviour
         Debug.Log("Destruyendo todas las unidades.");
         foreach( GameObject laUnidadManager in unidadesManagerP1){
             laUnidadManager.GetComponent<UnidadManager>().EliminarTodasUnidades();
-            laUnidadManager.GetComponent<UnidadManager>().destruida = true;
+            laUnidadManager.GetComponent<UnidadManager>().muerto = true;
             Destroy(laUnidadManager);
         }
         foreach( GameObject laUnidadManager in unidadesManagerP2){
             laUnidadManager.GetComponent<UnidadManager>().EliminarTodasUnidades();
-            laUnidadManager.GetComponent<UnidadManager>().destruida = true;
+            laUnidadManager.GetComponent<UnidadManager>().muerto = true;
             Destroy(laUnidadManager);
         }
     }
@@ -211,13 +211,13 @@ public class BatallaManager : MonoBehaviour
         int contador = 0;
         if( numPlayer == 1){
             for(int i = 0 ; i < unidadesManagerP1.Length; i++){
-                if (unidadesManagerP1[i] == null || unidadesManagerP1[i].gameObject.GetComponent<UnidadManager>().destruida)
+                if (unidadesManagerP1[i] == null || unidadesManagerP1[i].gameObject.GetComponent<UnidadManager>().muerto)
                     contador++;
             }
         }
         if( numPlayer == 2){
             for(int i = 0 ; i < unidadesManagerP2.Length; i++){
-                if (unidadesManagerP2[i] == null || unidadesManagerP2[i].gameObject.GetComponent<UnidadManager>().destruida)
+                if (unidadesManagerP2[i] == null || unidadesManagerP2[i].gameObject.GetComponent<UnidadManager>().muerto)
                     contador++;
             }
         }
@@ -233,7 +233,7 @@ public class BatallaManager : MonoBehaviour
         unidadSeleccionadaP1++;
         if(unidadSeleccionadaP1 > 2)
             unidadSeleccionadaP1 = 0;
-        while (unidadesManagerP1[unidadSeleccionadaP1].GetComponent<UnidadManager>().destruida){
+        while (unidadesManagerP1[unidadSeleccionadaP1].GetComponent<UnidadManager>().muerto){
             unidadSeleccionadaP1++;
             if(unidadSeleccionadaP1 > 2)
                 unidadSeleccionadaP1 = 0;
@@ -251,7 +251,7 @@ public class BatallaManager : MonoBehaviour
         unidadSeleccionadaP2++;
         if(unidadSeleccionadaP2 > 2)
             unidadSeleccionadaP2 = 0;
-        while (unidadesManagerP2[unidadSeleccionadaP2].GetComponent<UnidadManager>().destruida){
+        while (unidadesManagerP2[unidadSeleccionadaP2].GetComponent<UnidadManager>().muerto){
             unidadSeleccionadaP2++;
             if(unidadSeleccionadaP2 > 2)
                 unidadSeleccionadaP2 = 0;

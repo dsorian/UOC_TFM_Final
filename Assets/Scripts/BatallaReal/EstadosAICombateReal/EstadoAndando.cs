@@ -36,7 +36,7 @@ public class EstadoAndando : IEstadoUnidad
                 distanciaObjetivo = Vector3.Distance(fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position,fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().GetVanguardia().transform.position);
                 Debug.Log("IA Real: EstadoAndando:    CATAPULTA: La distancia con el objetivo es: "+distanciaObjetivo);
                 Debug.Log("IA Real: EstadoAndando: "+fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position+"\n           "+fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().GetVanguardia().transform.position);
-                if( distanciaObjetivo < 4.1f ){
+                if( distanciaObjetivo < 4.2f ){
                     Debug.Log("IA Real: 2.-EstadoAndando: de: "+fsmAIController.player+"    CATAPULTA: La distancia con el objetivo es: "+distanciaObjetivo+" Le ataco!!!!");
                     AEstadoAtacando();
                     return;
@@ -64,9 +64,9 @@ public class EstadoAndando : IEstadoUnidad
             if( fsmAIController.elBatallaManager.unidadSeleccionadaP2 == 0 ){     //Unidad es CATAPULTA
                 int unidadObjetivo;
                 //Vemos a qué objetivo disparar
-                if( !fsmAIController.unidadesManagerP1[1].GetComponent<UnidadManager>().destruida){
+                if( !fsmAIController.unidadesManagerP1[1].GetComponent<UnidadManager>().muerto){
                     unidadObjetivo = 1;
-                }else if( !fsmAIController.unidadesManagerP1[2].GetComponent<UnidadManager>().destruida){
+                }else if( !fsmAIController.unidadesManagerP1[2].GetComponent<UnidadManager>().muerto){
                     unidadObjetivo = 2;
                 }else
                     unidadObjetivo = 0;
@@ -76,8 +76,8 @@ public class EstadoAndando : IEstadoUnidad
             }else{
                 //Si queremos ir avanzando poco a poco en dirección al objetivo
                 //vectorConObjetivo = fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position-fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position;
-                //El objetivo es directamente la unidad que queremos atacar
-                vectorConObjetivo = fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position + new Vector3(4,0,0);
+                //El objetivo es directamente la unidad que queremos atacar + el rango de ataque para no ponerse encima justo, sino un poco a la derecha
+                vectorConObjetivo = fsmAIController.unidadesManagerP1[fsmAIController.numUnidadObjetivo].transform.position + new Vector3(fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].GetComponent<UnidadManager>().rangoAtaque-1,0,0);// + new Vector3(3,0,0);
                 Debug.Log("IA Real: 9.-EstadoAndando de: "+fsmAIController.player+": vectorConObjetivo:"+vectorConObjetivo);
             }
             //Para que no se quede justo en el sitio sino un poco antes lo muevo 6 unidades a la derecha y se quedarán las vanguardias mirando

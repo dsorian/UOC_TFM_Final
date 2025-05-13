@@ -110,9 +110,9 @@ public class AI_CombateReal : MonoBehaviour
         float distAux;
         for(int i = 0; i<unidadesManagerP2.Length;i++){
             distAux = 10000;
-            if( ! unidadesManagerP2[i].GetComponent<UnidadManager>().destruida){
+            if( ! unidadesManagerP2[i].GetComponent<UnidadManager>().muerto){
                 for(int j = 0; j<unidadesManagerP1.Length;j++){
-                    if( ! unidadesManagerP1[j].GetComponent<UnidadManager>().destruida){
+                    if( ! unidadesManagerP1[j].GetComponent<UnidadManager>().muerto){
                         distAux = Vector3.Distance(unidadesManagerP2[i].transform.position,unidadesManagerP1[j].transform.position);
                         if(distAux < distancia){
                             unidadAmenazada = i;

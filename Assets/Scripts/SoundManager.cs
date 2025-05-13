@@ -24,11 +24,11 @@ public class SoundManager : MonoBehaviour
 
 /*Volver a poner el volumen, de momento lo pongo fuerte para testear */
 
-    [Range(0f, 1f)] public float globalVolume = 1.0f;
-
+    [Range(0f, 1f)] public float musicaVolume = 0.02f;
+    [Range(0f, 1f)] public float efectosVolume = 0.02f;
     // Start is called before the first frame update
     void Start(){
-        PlayMusic(musicaMapa[0],true,0.02f,"Mapa");
+        PlayMusic(musicaMapa[0],true,musicaVolume,"Mapa");
     }
 
     /// Cambia el AudioListener activo según la cámara seleccionada.
@@ -57,12 +57,12 @@ public class SoundManager : MonoBehaviour
 
 
     /// Reproduce un sonido específico de un array.
-    public void PlaySound(AudioClip[] soundArray, int index, float volume = 1.0f, string origen = "Mapa")
+    public void PlaySound(AudioClip[] soundArray, int index, float volume , string origen = "Mapa")
     {
         if( origen == "Mapa"){
             if (soundArray != null && index >= 0 && index < soundArray.Length)
             {
-                mapaSource.PlayOneShot(soundArray[index], volume * globalVolume);
+                mapaSource.PlayOneShot(soundArray[index], volume * efectosVolume);
             }
             else
             {
@@ -71,7 +71,7 @@ public class SoundManager : MonoBehaviour
         }else if( origen == "Batalla"){
             if (soundArray != null && index >= 0 && index < soundArray.Length)
             {
-                batallaSource.PlayOneShot(soundArray[index], volume * globalVolume);
+                batallaSource.PlayOneShot(soundArray[index], volume * efectosVolume);
             }
             else
             {
@@ -82,13 +82,13 @@ public class SoundManager : MonoBehaviour
 
 
     /// Reproduce un sonido aleatorio de un array.
-    public void PlayRandomSound(AudioClip[] soundArray, float volume = 1.0f, string origen = "Mapa")
+    public void PlayRandomSound(AudioClip[] soundArray, float volume, string origen = "Mapa")
     {
         if( origen == "Mapa"){
             if (soundArray != null && soundArray.Length > 0)
             {
                 int randomIndex = Random.Range(0, soundArray.Length);
-                UnidadSeleccionadaP1Source.PlayOneShot(soundArray[randomIndex], volume * globalVolume);
+                UnidadSeleccionadaP1Source.PlayOneShot(soundArray[randomIndex], volume * efectosVolume);
             }
             else
             {
@@ -98,7 +98,7 @@ public class SoundManager : MonoBehaviour
             if (soundArray != null && soundArray.Length > 0)
             {
                 int randomIndex = Random.Range(0, soundArray.Length);
-                batallaSource.PlayOneShot(soundArray[randomIndex], volume * globalVolume);
+                batallaSource.PlayOneShot(soundArray[randomIndex], volume * efectosVolume);
             }
             else
             {
@@ -109,13 +109,13 @@ public class SoundManager : MonoBehaviour
 
 
     /// Reproduce música de fondo.
-    public void PlayMusic(AudioClip musicClip, bool loop = true, float volume = 1.0f, string origen = "Mapa")
+    public void PlayMusic(AudioClip musicClip, bool loop, float volume, string origen = "Mapa")
     {
         if( origen == "Mapa"){
             if (musicClip != null)
             {
                 mapaSource.clip = musicClip;
-                mapaSource.volume = volume * globalVolume;
+                mapaSource.volume = volume * musicaVolume;
                 mapaSource.loop = loop;
                 mapaSource.Play();
             }
@@ -127,7 +127,7 @@ public class SoundManager : MonoBehaviour
             if (musicClip != null)
             {
                 batallaSource.clip = musicClip;
-                batallaSource.volume = volume * globalVolume;
+                batallaSource.volume = volume * musicaVolume;
                 batallaSource.loop = loop;
                 batallaSource.Play();
             }
@@ -139,7 +139,7 @@ public class SoundManager : MonoBehaviour
             if (musicClip != null)
             {
                 UnidadSeleccionadaP1Source.clip = musicClip;
-                UnidadSeleccionadaP1Source.volume = volume * globalVolume;
+                UnidadSeleccionadaP1Source.volume = volume * musicaVolume;
                 UnidadSeleccionadaP1Source.loop = loop;
                 UnidadSeleccionadaP1Source.Play();
             }
@@ -151,7 +151,7 @@ public class SoundManager : MonoBehaviour
             if (musicClip != null)
             {
                 UnidadSeleccionadaP2Source.clip = musicClip;
-                UnidadSeleccionadaP2Source.volume = volume * globalVolume;
+                UnidadSeleccionadaP2Source.volume = volume * musicaVolume;
                 UnidadSeleccionadaP2Source.loop = loop;
                 UnidadSeleccionadaP2Source.Play();
             }
@@ -194,17 +194,21 @@ public class SoundManager : MonoBehaviour
     public void SetGlobalVolume(float volume, string origen = "Mapa")
     {
         if( origen == "Mapa"){
-            globalVolume = Mathf.Clamp01(volume);
-            mapaSource.volume = globalVolume;
+            musicaVolume = Mathf.Clamp01(volume);
+            efectosVolume = Mathf.Clamp01(volume);
+            mapaSource.volume = musicaVolume;
         }else if( origen == "Batalla"){
-            globalVolume = Mathf.Clamp01(volume);
-            batallaSource.volume = globalVolume;
+            musicaVolume = Mathf.Clamp01(volume);
+            efectosVolume = Mathf.Clamp01(volume);
+            batallaSource.volume = musicaVolume;
         }else if( origen == "UnidadSeleccionadaP1Source"){
-            globalVolume = Mathf.Clamp01(volume);
-            UnidadSeleccionadaP1Source.volume = globalVolume;
+            musicaVolume = Mathf.Clamp01(volume);
+            efectosVolume = Mathf.Clamp01(volume);
+            UnidadSeleccionadaP1Source.volume = musicaVolume;
         }else if( origen == "UnidadSeleccionadaP2Source"){
-            globalVolume = Mathf.Clamp01(volume);
-            UnidadSeleccionadaP2Source.volume = globalVolume;
+            musicaVolume = Mathf.Clamp01(volume);
+            efectosVolume = Mathf.Clamp01(volume);
+            UnidadSeleccionadaP2Source.volume = musicaVolume;
         }
     }
 }

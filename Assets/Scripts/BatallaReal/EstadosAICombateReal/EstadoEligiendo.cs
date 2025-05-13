@@ -52,7 +52,7 @@ public class EstadoEligiendo : IEstadoUnidad
         float distanciaAux = 10000;
         //Elegimos objetivo más cercano
         for (int i=0; i<fsmAIController.unidadesManagerP1.Length; i++){
-            if( ! fsmAIController.unidadesManagerP1[i].GetComponent<UnidadManager>().destruida)
+            if( ! fsmAIController.unidadesManagerP1[i].GetComponent<UnidadManager>().muerto)
                 distanciaAux = Vector3.Distance(fsmAIController.unidadesManagerP1[i].transform.position, fsmAIController.unidadesManagerP2[fsmAIController.elBatallaManager.unidadSeleccionadaP2].transform.position);
             if( distanciaAux < distancia ){
                 distancia = distanciaAux;

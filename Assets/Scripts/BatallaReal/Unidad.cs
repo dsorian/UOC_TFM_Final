@@ -126,11 +126,12 @@ public class Unidad : MonoBehaviour
     public void IniAtacarCaballeria(){
         if( muerto)
             return;
-        Debug.Log("Atacando caballería");
+        Debug.Log("Unidad: Atacando caballería");
         miNavMeshAgent.isStopped = false;
         setMyDestination(targetFollowed);
         idle = false;
         atacando = true;
+        andando = true;
         cargandoCatapulta = false;
         defendiendo = false;
         muerto = false;
@@ -146,16 +147,8 @@ public class Unidad : MonoBehaviour
             objetivo.GetComponent<Unidad>().Morir();
         }
         miUnidadManager.atacando = false;
+        miUnidadManager.andando = false;
         Parar();
-    }
-
-    public void GolpearCaballeria(){
-        if( muerto)
-            return;
-        if( objetivo != null && Vector3.Distance(transform.position,objetivo.transform.position) < 5.5f){
-            Debug.Log("ZASCA!!! Soy caballero CARGANDO de "+player+", he golpeado a: "+objetivo.GetComponent<Unidad>().tag +" que es de "+objetivo.GetComponent<Unidad>().player+" Distancia: "+Vector3.Distance(transform.position,objetivo.transform.position));
-            objetivo.GetComponent<Unidad>().Morir();
-        }
     }
 
     public void FinAtacar(){

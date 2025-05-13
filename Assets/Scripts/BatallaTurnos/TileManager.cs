@@ -78,7 +78,7 @@ public class TileManager : MonoBehaviour
     public GameObject elCampoBatallaManager;
     public int contadorTurnos = 1;  //Llevar la cuenta de los turnos
     //private int tipoCeldaActual;
-    public GameObject elCanvasEdicion,elCanvasUI_Mapa,elCanvasUI_Batalla, elCanvasOpciones, elCanvasFinPartida;
+    public GameObject elCanvasEdicion,elCanvasUI_Mapa,elCanvasUI_Batalla, elCanvasPausa, elCanvasFinPartida, elCanvasOpciones;
     public TMP_Text mensajeFinPartida;
     public LineRenderer elLineRenderer;
     public GameObject[] decoradosCeldas;  //Para decorar las celdas 0=árbol 1=Montaña
@@ -336,13 +336,13 @@ PlayerPrefs.SetInt("numPlayers", 1);
             //elMapaReino.GetComponent<MapaReino>().DesactivarCapitales();
             elMapaReino.GetComponent<MapaReino>().NoResaltarNingunEstado();
             */
-            if( elCanvasOpciones.gameObject.activeSelf ){
+            if( elCanvasPausa.gameObject.activeSelf ){
                 Time.timeScale = 1;
-                elCanvasOpciones.gameObject.SetActive(false);
+                elCanvasPausa.gameObject.SetActive(false);
             }
             else{
                 Time.timeScale = 0;
-                elCanvasOpciones.gameObject.SetActive(true);
+                elCanvasPausa.gameObject.SetActive(true);
             }
         }
         if(mostrarInfoDebug)
@@ -1308,13 +1308,22 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
             elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);//audioSourceBatalla.PlayOneShot(clickBoton);
         else
             elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);//audioSourceMapa.PlayOneShot(clickBoton);
-        elCanvasOpciones.gameObject.SetActive(false);
+        elCanvasPausa.gameObject.SetActive(false);
     }
 
     public void QuitGame(){
-        //audioSourceBatalla.PlayOneShot(clickBoton);
         elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
         Application.Quit();
+    }
+
+    public void OpenSettings(){
+        elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
+        elCanvasOpciones.gameObject.SetActive(true);
+    }
+
+    public void CloseSettings(){
+        elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
+        elCanvasOpciones.gameObject.SetActive(false);
     }
 
     public void SiguienteFaseTutorial(){
