@@ -22,10 +22,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] sonidosCatapulta; //Sonidos de catapulta
     public AudioClip[] sonidosExplosion; //Sonidos de explosiones
 
-/*Volver a poner el volumen, de momento lo pongo fuerte para testear */
+    /*Volver a poner el volumen 0.02, de momento lo pongo fuerte para testear */
 
-    [Range(0f, 1f)] public float musicaVolume = 0.02f;
-    [Range(0f, 1f)] public float efectosVolume = 0.02f;
+    [Range(0f, 1f)] public float musicaVolume = 0.05f;
+    [Range(0f, 1f)] public float efectosVolume = 0.5f;
     // Start is called before the first frame update
     void Start(){
         PlayMusic(musicaMapa[0],true,musicaVolume,"Mapa");
@@ -136,10 +136,11 @@ public class SoundManager : MonoBehaviour
                 Debug.LogWarning("PlayMusic: Clip de música nulo.");
             }
         }else if( origen == "UnidadSeleccionadaP1Source"){
+            //Para los sonidos de la batalla
             if (musicClip != null)
             {
                 UnidadSeleccionadaP1Source.clip = musicClip;
-                UnidadSeleccionadaP1Source.volume = volume * musicaVolume;
+                UnidadSeleccionadaP1Source.volume = volume * efectosVolume;
                 UnidadSeleccionadaP1Source.loop = loop;
                 UnidadSeleccionadaP1Source.Play();
             }
@@ -151,7 +152,7 @@ public class SoundManager : MonoBehaviour
             if (musicClip != null)
             {
                 UnidadSeleccionadaP2Source.clip = musicClip;
-                UnidadSeleccionadaP2Source.volume = volume * musicaVolume;
+                UnidadSeleccionadaP2Source.volume = volume * efectosVolume;
                 UnidadSeleccionadaP2Source.loop = loop;
                 UnidadSeleccionadaP2Source.Play();
             }
@@ -190,25 +191,20 @@ public class SoundManager : MonoBehaviour
         }
     }
     
-    /// Ajusta el volumen global.
-    public void SetGlobalVolume(float volume, string origen = "Mapa")
-    {
-        if( origen == "Mapa"){
-            musicaVolume = Mathf.Clamp01(volume);
-            efectosVolume = Mathf.Clamp01(volume);
-            mapaSource.volume = musicaVolume;
-        }else if( origen == "Batalla"){
-            musicaVolume = Mathf.Clamp01(volume);
-            efectosVolume = Mathf.Clamp01(volume);
-            batallaSource.volume = musicaVolume;
-        }else if( origen == "UnidadSeleccionadaP1Source"){
-            musicaVolume = Mathf.Clamp01(volume);
-            efectosVolume = Mathf.Clamp01(volume);
-            UnidadSeleccionadaP1Source.volume = musicaVolume;
-        }else if( origen == "UnidadSeleccionadaP2Source"){
-            musicaVolume = Mathf.Clamp01(volume);
-            efectosVolume = Mathf.Clamp01(volume);
-            UnidadSeleccionadaP2Source.volume = musicaVolume;
-        }
+    /// Ajusta el volumen global de la música.
+    public void SetGlobalMusicVolume(float volume){
+        musicaVolume = Mathf.Clamp01(volume);
+                
+        mapaSource.volume = musicaVolume;
+        batallaSource.volume = musicaVolume;
     }
+
+    /// Ajusta el volumen global de los efectos de sonido.
+    public void SetGlobalSoundVolume(float volume){
+        efectosVolume = Mathf.Clamp01(volume);
+        
+        UnidadSeleccionadaP1Source.volume = efectosVolume;
+        UnidadSeleccionadaP2Source.volume = efectosVolume;
+    }
+
 }

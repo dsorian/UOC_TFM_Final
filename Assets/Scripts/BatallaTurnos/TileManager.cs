@@ -45,8 +45,8 @@ public class TileManager : MonoBehaviour
     //Para gestión de los turnos
     public GameObject modeloEjercito;
     public Material[] materialesEjercito;
-    private int currentPlayer = 1;
-    private GameObject ejercitoSeleccionado = null;
+    public int currentPlayer = 1;
+    public GameObject ejercitoSeleccionado = null;
     private int celdasRestantes = -1;  //-1=no hay tropa en movimiento  valor=número de casillas hasta el destino antes->índice de la tropa en movimiento del jugador actual
     public float velocidadTropa = 5.0f;
     private bool atacando = false;
@@ -65,10 +65,10 @@ public class TileManager : MonoBehaviour
 
     //Para editar el mapa y crear los estados
     private bool editandoMapa = false;
-    private int numEstadoActual=0;
-    private int numEstadoAnterior=0;  //Para saber qué estado había seleccionado antes
-    private bool estadoSeleccionado = false;
-    private bool modoTurnos = true; //true=Combates automáticos false=Combates reales
+    public int numEstadoActual=0;
+    public int numEstadoAnterior=0;  //Para saber qué estado había seleccionado antes
+    public bool estadoSeleccionado = false;
+    public bool modoTurnos = true; //true=Combates automáticos false=Combates reales
     public bool oponenteCPU = false;
 //    public bool combateEnCurso = false;
     public bool combateActivo = false; //false=estamos con el mapa true=Estamos en el campo de batalla(para desactivar el tick)
@@ -87,7 +87,8 @@ public class TileManager : MonoBehaviour
     public CurtainAnimator laCortinilla; //Cortinilla para la transición entre escenas.
 
     //Para la AI
-    public AI_Turnos_SistemaReglas la_AI_Turnos;public AI_CombateReal la_AI_Real;
+    public AI_Turnos_SistemaReglas la_AI_Turnos;
+    public AI_CombateReal la_AI_Real;
 
     private float deltaTimeParaFPS = 0.0f;
     //Sonidos
@@ -111,7 +112,8 @@ public class TileManager : MonoBehaviour
         "Enjoy the game! \nClick to continue.",
         "Enjoy the game! \nClick to continue."
         };
-
+    public bool grabandoTrailer = false; //Para grabar el trailer para controlar los eventos del mismo
+    
     private void Awake(){
         instance = this;
         tiles = new Dictionary<Vector3Int, HexTile>();
@@ -132,7 +134,7 @@ public class TileManager : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = 60;
-        
+
         StartCoroutine(Tick());
 
         Time.timeScale = 1;
@@ -140,42 +142,44 @@ public class TileManager : MonoBehaviour
         laCortinilla.PlayOpenCurtainAnimation(false);
 
         CargarMapaJuego();
-        
 
-/***/
+
+        /***/
         jugadores[1] = new Jugador();
         jugadores[2] = new Jugador();
 
         //Creamos los ejércitos en sus casillas
         HexTile tile;
-        jugadores[1].ejercitos = new List<GameObject>(); 
-        for(int i=0; i<numEjercitosP1;i++){
-            jugadores[1].ejercitos.Add(Instantiate(modeloEjercito, new Vector3(0,0,0), new Quaternion()));
+        jugadores[1].ejercitos = new List<GameObject>();
+        for (int i = 0; i < numEjercitosP1; i++)
+        {
+            jugadores[1].ejercitos.Add(Instantiate(modeloEjercito, new Vector3(0, 0, 0), new Quaternion()));
             jugadores[1].ejercitos[i].GetComponentInChildren<SkinnedMeshRenderer>().material = materialesEjercito[1];
 
             HexTile[] lasTiles = tiles.Values.ToArray();
-            tile = lasTiles[UnityEngine.Random.Range(0,lasTiles.Length)];
+            tile = lasTiles[UnityEngine.Random.Range(0, lasTiles.Length)];
             jugadores[1].ejercitos[i].GetComponent<Ejercito>().currentTile = tile;
-//            jugadores[1].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
+            //            jugadores[1].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
             jugadores[1].ejercitos[i].GetComponent<Ejercito>().numPlayer = 1;
         }
-        jugadores[2].ejercitos = new List<GameObject>(); 
-        for(int i=0; i<numEjercitosP2;i++){
+        jugadores[2].ejercitos = new List<GameObject>();
+        for (int i = 0; i < numEjercitosP2; i++)
+        {
             //Lo creamos
-            jugadores[2].ejercitos.Add(Instantiate(modeloEjercito, new Vector3(0,0,0), new Quaternion()));
+            jugadores[2].ejercitos.Add(Instantiate(modeloEjercito, new Vector3(0, 0, 0), new Quaternion()));
             jugadores[2].ejercitos[i].GetComponentInChildren<SkinnedMeshRenderer>().material = materialesEjercito[2];
 
             HexTile[] lasTiles = tiles.Values.ToArray();
-            tile = lasTiles[UnityEngine.Random.Range(0,lasTiles.Length)];
+            tile = lasTiles[UnityEngine.Random.Range(0, lasTiles.Length)];
             jugadores[2].ejercitos[i].GetComponent<Ejercito>().currentTile = tile;
-//            jugadores[2].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
+            //            jugadores[2].ejercitos[i].GetComponent<Ejercito>().indiceEjercito = i;
             jugadores[2].ejercitos[i].GetComponent<Ejercito>().numPlayer = 2;
         }
-        
 
 
-/***/
-        if( PlayerPrefs.GetInt("tutorialActivo") == 1)
+
+        /***/
+        if (PlayerPrefs.GetInt("tutorialActivo") == 1)
             tutorialActivo = true;
         else
             tutorialActivo = false;
@@ -183,42 +187,47 @@ public class TileManager : MonoBehaviour
         //HexTile tile;
         int posIni1;  // para ocupar siempre el mismo estado luego poner -->UnityEngine.Random.Range(1,12);
         int posIni2;  // como arriba o poner lo que interese para el juego UnityEngine.Random.Range(14,21);
-        if(tutorialActivo){
+        if (tutorialActivo)
+        {
             posIni1 = 9;
             posIni2 = 3;
-        }else{
-            posIni1 = 9;//UnityEngine.Random.Range(1,11);  //Para debug poner 9
-            posIni2 = 3;//UnityEngine.Random.Range(14,21);  //Para debug poner 3
         }
-        for(int i=0; i<jugadores[1].ejercitos.Count;i++){
+        else
+        {
+            posIni1 = UnityEngine.Random.Range(1,11);  //Para debug poner 9
+            posIni2 = UnityEngine.Random.Range(14,21);  //Para debug poner 3
+        }
+        for (int i = 0; i < jugadores[1].ejercitos.Count; i++)
+        {
             auxVector2 = elMapaReino.GetComponent<MapaReino>().listaEstados[posIni1].GetCoordsCapital();
-            tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[auxVector2.y*elMapaReino.GetComponent<MapaReino>().gridSize.y+auxVector2.x].GetComponent<HexTile>();
-            jugadores[1].ejercitos[i].transform.position = tile.transform.position+ new Vector3(0f,0f,0f);
-            jugadores[1].ejercitos[i].transform.LookAt(new Vector3(0,0,-500));  //Mira siempre al sur
+            tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[auxVector2.y * elMapaReino.GetComponent<MapaReino>().gridSize.y + auxVector2.x].GetComponent<HexTile>();
+            jugadores[1].ejercitos[i].transform.position = tile.transform.position + new Vector3(0f, 0f, 0f);
+            jugadores[1].ejercitos[i].transform.LookAt(new Vector3(0, 0, -500));  //Mira siempre al sur
             jugadores[1].ejercitos[i].GetComponent<Ejercito>().currentTile = tile;
             elMapaReino.GetComponent<MapaReino>().capitalesEstados[tile.numEstado].GetComponent<Capital>().OcuparCapital(jugadores[1].ejercitos[i]);
-            if(tutorialActivo)
-                posIni1= 10;
+            if (tutorialActivo)
+                posIni1 = 10;
             else
                 posIni1++;
         }
         //Pongo la siguiente capital ya ocupada sin ejército
-        elMapaReino.GetComponent<MapaReino>().capitalesEstados[posIni1+1].GetComponent<Capital>().SetPropietario(1);
+        elMapaReino.GetComponent<MapaReino>().capitalesEstados[posIni1 + 1].GetComponent<Capital>().SetPropietario(1);
 
-        for(int i=0; i<jugadores[2].ejercitos.Count;i++){
+        for (int i = 0; i < jugadores[2].ejercitos.Count; i++)
+        {
             auxVector2 = elMapaReino.GetComponent<MapaReino>().listaEstados[posIni2].GetCoordsCapital();
-            tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[auxVector2.y*elMapaReino.GetComponent<MapaReino>().gridSize.y+auxVector2.x].GetComponent<HexTile>();
-            jugadores[2].ejercitos[i].transform.position = tile.transform.position+ new Vector3(0,0f,0);
-            jugadores[2].ejercitos[i].transform.LookAt(new Vector3(0,0,-500));  //Mira siempre al sur
+            tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[auxVector2.y * elMapaReino.GetComponent<MapaReino>().gridSize.y + auxVector2.x].GetComponent<HexTile>();
+            jugadores[2].ejercitos[i].transform.position = tile.transform.position + new Vector3(0, 0f, 0);
+            jugadores[2].ejercitos[i].transform.LookAt(new Vector3(0, 0, -500));  //Mira siempre al sur
             jugadores[2].ejercitos[i].GetComponent<Ejercito>().currentTile = tile;
             elMapaReino.GetComponent<MapaReino>().capitalesEstados[tile.numEstado].GetComponent<Capital>().OcuparCapital(jugadores[2].ejercitos[i]);
-            if(tutorialActivo)
+            if (tutorialActivo)
                 posIni2 = 6;
             else
                 posIni2++;
         }
         //Pongo la siguiente capital ya ocupada sin ejército
-        elMapaReino.GetComponent<MapaReino>().capitalesEstados[posIni2+1].GetComponent<Capital>().SetPropietario(2);
+        elMapaReino.GetComponent<MapaReino>().capitalesEstados[posIni2 + 1].GetComponent<Capital>().SetPropietario(2);
 
         //player.transform.position = player.GetComponent<Ejercito>().currentTile.transform.position + new Vector3(0,1f,0);
 
@@ -229,26 +238,30 @@ public class TileManager : MonoBehaviour
         numEstadoAnterior = 0;
         numEstadoActual = 0;
 
-        elCanvasEdicion.transform.GetChild(0).GetComponent<TMP_Text>().text = "Estado Actual: "+ numEstadoActual;
+        elCanvasEdicion.transform.GetChild(0).GetComponent<TMP_Text>().text = "Estado Actual: " + numEstadoActual;
         //elCanvasUI_Mapa.transform.GetChild(0).GetComponent<TMP_Text>().text = "Turno: Player"+currentPlayer;
         elCanvasUI_Mapa.GetComponent<CanvasUI_MapaController>().ResaltarTurnoPlayer(currentPlayer);
         //elCanvasUI_Mapa.transform.GetChild(5).GetComponent<TMP_Text>().text = "Oro Player 1: "+jugadores[1].cantidadOro+"\nOro Player 2: "+jugadores[2].cantidadOro;
-        elCanvasUI_Mapa.GetComponent<CanvasUI_MapaController>().EstablecerOroPlayers(jugadores[1].cantidadOro,jugadores[2].cantidadOro);
+        elCanvasUI_Mapa.GetComponent<CanvasUI_MapaController>().EstablecerOroPlayers(jugadores[1].cantidadOro, jugadores[2].cantidadOro);
         int porTurnos = PlayerPrefs.GetInt("modoTurnos");
-//porTurnos=1; //Para forzar el si es porturnos==1 o no porturnos==2
-        if( porTurnos == 1){
+        //porTurnos=1; //Para forzar el si es porturnos==1 o no porturnos==2
+        if (porTurnos == 1)
+        {
             modoTurnos = true;
         }
-        else{
+        else
+        {
             modoTurnos = false;
         }
         int numPlayers = PlayerPrefs.GetInt("numPlayers");
-        
+
         //Activamos el modo tutorial y mostramos el pergamino para los textos de tutorial
-        if( tutorialActivo){
-            if( modoTurnos)
+        if (tutorialActivo)
+        {
+            if (modoTurnos)
                 elCanvasUI_Mapa.transform.GetChild(2).GetChild(0).GetComponent<TMP_Text>().text = textosTutorial[0];
-            else{
+            else
+            {
                 //Venimos del paso anterior del manual. Mostramos el mensaje para pasar al combate manual
                 posTutorial = 7;
                 elCanvasUI_Mapa.transform.GetChild(2).GetChild(0).GetComponent<TMP_Text>().text = textosTutorial[posTutorial];
@@ -256,24 +269,27 @@ public class TileManager : MonoBehaviour
             }
         }
         elCanvasUI_Mapa.transform.GetChild(2).gameObject.SetActive(tutorialActivo);
-//Para forzar el número de jugadores, modoTurnos y currentplayer
+        //Para forzar el número de jugadores, modoTurnos y currentplayer
 
 
-//currentPlayer = 2;
-/*
-numPlayers=1; 
-PlayerPrefs.SetInt("modoTurnos", 1);
-PlayerPrefs.SetInt("numPlayers", 1);
-*/ 
-        if(!tutorialActivo){
-            if( numPlayers == 1){
+        //currentPlayer = 2;
+        /*
+        numPlayers=1; 
+        PlayerPrefs.SetInt("modoTurnos", 1);
+        PlayerPrefs.SetInt("numPlayers", 1);
+        */
+        if (!tutorialActivo)
+        {
+            if (numPlayers == 1)
+            {
                 oponenteCPU = true;
                 la_AI_Turnos.turnoIAterminado = true;
                 la_AI_Turnos.gameObject.SetActive(true);
                 la_AI_Real.gameObject.SetActive(true);
                 StartCoroutine(la_AI_Turnos.PerformAIActions());
             }
-            else{
+            else
+            {
                 oponenteCPU = false;
                 la_AI_Turnos.gameObject.SetActive(false);
                 la_AI_Real.gameObject.SetActive(false);
@@ -281,11 +297,34 @@ PlayerPrefs.SetInt("numPlayers", 1);
         }
         contadorTurnos = 1;
         elCampoBatallaManager.GetComponent<BatallaManager>().elTileManager = this;
+        
+        if (grabandoTrailer)
+        {
+            PlayerPrefs.SetInt("modoTurnos", 1);
+            PlayerPrefs.SetInt("numPlayers", 2);
+            oponenteCPU = false;
+            la_AI_Turnos.gameObject.SetActive(false);
+            la_AI_Real.gameObject.SetActive(false);
+            Debug.Log("Grabando trailer. Eliminamos los ejércitos de los jugadores para que no se vean al empezar el trailer");
+            //Eliminamos los ejércitos de los jugadores para que no se vean al empezar el trailer
+            for (int i = jugadores[1].ejercitos.Count - 1; i >= 0; i--)
+            {
+                Debug.Log("Eliminando ejército: " + i + " = " + jugadores[1].ejercitos[i].name);
+                Destroy(jugadores[1].ejercitos[i]);
+                EliminarEjercito(jugadores[1].ejercitos[i]);
+            }
+            for (int i = jugadores[2].ejercitos.Count - 1; i >= 0; i--)
+            {
+                Destroy(jugadores[2].ejercitos[i]);
+                EliminarEjercito(jugadores[2].ejercitos[i]);
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         //Para mostrar FPS
         deltaTimeParaFPS += (Time.deltaTime - deltaTimeParaFPS) * 0.1f;
 
@@ -297,14 +336,14 @@ PlayerPrefs.SetInt("numPlayers", 1);
 
 
         //Comprobamos si se ha acabado la partida.
-        if(jugadores[1].ejercitos.Count == 0 ){
+        if(jugadores[1].ejercitos.Count == 0 && !grabandoTrailer){
             Debug.Log("Victoria del ejército 2. Mostraremos mensaje y volveremos al principio.");
             mensajeFinPartida.text = "PLAYER 2 WINS!!!!!";
             Time.timeScale = 0;
             elCanvasFinPartida.gameObject.SetActive(true);
             //SceneManager.LoadScene("Presentacion_y_menus", LoadSceneMode.Single);
         }
-        if(jugadores[2].ejercitos.Count == 0 ){
+        if(jugadores[2].ejercitos.Count == 0 && !grabandoTrailer){
             Debug.Log("Victoria del ejército 1. Mostraremos mensaje y volveremos al principio.");
             mensajeFinPartida.text = "PLAYER 1 WINS!!!!!";
             Time.timeScale = 0;
@@ -339,6 +378,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
             if( elCanvasPausa.gameObject.activeSelf ){
                 Time.timeScale = 1;
                 elCanvasPausa.gameObject.SetActive(false);
+                elCanvasOpciones.SetActive(false);
             }
             else{
                 Time.timeScale = 0;
@@ -398,7 +438,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
     //  *******     *******     *********   *******     *********      **
     public void OnHighlightTile(HexTile tile){
         //Debug.Log("Resaltamos el estado: "+tile.numEstado);
-        if( tutorialActivo)
+        if( tutorialActivo || grabandoTrailer)
             return;
         if( Time.timeScale == 0)
             return;
@@ -453,7 +493,7 @@ PlayerPrefs.SetInt("numPlayers", 1);
     }
 
     public void OnSelectTile(HexTile tile){
-        if( tutorialActivo)
+        if (tutorialActivo)
             return;
         if(Time.timeScale == 0)
             return;
@@ -965,7 +1005,7 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
                 AddEjercito(currentPlayer);
 
                 //Es el turno de la IA, colocamos la tropa 
-                if( contadorTurnos%2 == 0 && oponenteCPU){
+                if( grabandoTrailer || (contadorTurnos%2 == 0 && oponenteCPU)){
                     List<int> indicesCapitalesVacias = elMapaReino.GetComponent<MapaReino>().GetCapitalesDesocupadasPlayer(2);
                     //La colocamos en una de las capitales vacías aleatoriamente
                     HexTile laTile = elMapaReino.GetComponent<MapaReino>().GetTileCapital(indicesCapitalesVacias[UnityEngine.Random.Range(0,indicesCapitalesVacias.Count-1)]);
@@ -1174,7 +1214,7 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
         //Debug.Log(mensaje);
     }
 
-    private void EliminarEjercito(GameObject elEjercito){
+    public void EliminarEjercito(GameObject elEjercito){
         if (elEjercito.GetComponent<Ejercito>().numPlayer == 1)
             jugadores[1].ejercitos.Remove(elEjercito);
         else
@@ -1228,7 +1268,7 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
     }
 
     //El nuevo ejército se añade a la lista de ejércitos
-    private void AddEjercito(int numPlayer)
+    public void AddEjercito(int numPlayer)
     {
         // Crear el nuevo ejército
         GameObject nuevoEjercito = Instantiate(modeloEjercito, new Vector3(0, 0, 0), Quaternion.identity);
@@ -1272,7 +1312,7 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
 
         Vector2Int aux = elMapaReino.GetComponent<MapaReino>().listaEstados[tile.numEstado].GetCoordsCapital();
         tile = elMapaReino.GetComponent<MapaReino>().elGridMapa[aux.y*elMapaReino.GetComponent<MapaReino>().gridSize.y+aux.x].GetComponent<HexTile>();
-        jugadores[currentPlayer].ejercitos[numTropaNueva].transform.position = tile.transform.position+ new Vector3(0f,1f,0f);
+        jugadores[currentPlayer].ejercitos[numTropaNueva].transform.position = tile.transform.position; //+ new Vector3(0f,1f,0f);
         jugadores[currentPlayer].ejercitos[numTropaNueva].transform.LookAt(new Vector3(0,0,-500));  //Mira siempre al sur
         jugadores[currentPlayer].ejercitos[numTropaNueva].GetComponent<Ejercito>().currentTile = tile;
         jugadores[currentPlayer].ejercitos[numTropaNueva].GetComponent<Ejercito>().haMovido = true;
@@ -1324,6 +1364,8 @@ Debug.Log("ENTRANDO" + jugadores[currentPlayer].cantidadOro+" numtropanueva: "+n
     public void CloseSettings(){
         elSoundManager.PlaySound(elSoundManager.sonidosMenu,0, 0.4f);
         elCanvasOpciones.gameObject.SetActive(false);
+        elCanvasPausa.gameObject.SetActive(false);
+        ContinuarPartida();
     }
 
     public void SiguienteFaseTutorial(){

@@ -441,7 +441,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &78840100
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2156,6 +2156,7 @@ MonoBehaviour:
   displayDuration: 2
   targetContent: {fileID: 1874505234}
   cortinaCerrada: 1
+  cortinaActivada: 1
 --- !u!114 &310970342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3955,6 +3956,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 2100000, guid: d0bd9eef0f12fb84c9762c33d28b9e1b, type: 2}
   - {fileID: 2100000, guid: cf06f16311924f4478737aa69c82caa7, type: 2}
+  currentPlayer: 1
+  ejercitoSeleccionado: {fileID: 0}
   velocidadTropa: 5
   numTropaNueva: -1
   elMapaReino: {fileID: 583434091}
@@ -3964,6 +3967,10 @@ MonoBehaviour:
   - {fileID: 0}
   numEjercitosP1: 2
   numEjercitosP2: 2
+  numEstadoActual: 0
+  numEstadoAnterior: 0
+  estadoSeleccionado: 0
+  modoTurnos: 1
   oponenteCPU: 0
   combateActivo: 0
   vencedor: 
@@ -3985,7 +3992,8 @@ MonoBehaviour:
   la_AI_Turnos: {fileID: 945346762}
   la_AI_Real: {fileID: 159400422}
   elSoundManager: {fileID: 1779772239}
-  tutorialActivo: 1
+  tutorialActivo: 0
+  grabandoTrailer: 0
 --- !u!1 &593782658
 GameObject:
   m_ObjectHideFlags: 0
@@ -4457,7 +4465,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4521,8 +4529,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1627581939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4649,7 +4657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 731789745}
   m_Layer: 5
-  m_Name: MensajeFinPartida
+  m_Name: Settings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5498,7 +5506,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5519,7 +5527,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &909433905
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6579,7 +6587,7 @@ RectTransform:
   m_Father: {fileID: 1983144641}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9484,7 +9492,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Back
+  m_text: Exit
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e2e107d2928d7e942b669886564a1fcd, type: 2}
   m_sharedMaterial: {fileID: -6498747399121100862, guid: e2e107d2928d7e942b669886564a1fcd, type: 2}
@@ -10129,8 +10137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicaSlider: {fileID: 902374395}
   efectosSlider: {fileID: 658765475}
-  musicaAudioSource: {fileID: 1779772241}
-  efectosAudioSource: {fileID: 1779772242}
+  soundManager: {fileID: 1779772239}
 --- !u!114 &1562790087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10873,7 +10880,7 @@ RectTransform:
   m_Father: {fileID: 36740288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11117,7 +11124,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3f2ade6c6bed40d46938e98008c2f4a7, type: 3}
   - {fileID: 8300000, guid: 291db9b0e7ef4904884ce47f710b80cf, type: 3}
   - {fileID: 8300000, guid: 018ed54d873a765488236ee723b3d167, type: 3}
-  globalVolume: 1
+  musicaVolume: 0.05
+  efectosVolume: 0.3
 --- !u!4 &1779772240
 Transform:
   m_ObjectHideFlags: 0
@@ -11478,8 +11486,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 385168505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -13435,6 +13443,10 @@ PrefabInstance:
     - target: {fileID: 8036512475422621983, guid: 755652c5bf9dc0545ac5fa487f8270a8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 112.598
+      objectReference: {fileID: 0}
+    - target: {fileID: 8394833028113305723, guid: 755652c5bf9dc0545ac5fa487f8270a8, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

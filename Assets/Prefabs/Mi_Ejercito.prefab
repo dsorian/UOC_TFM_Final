@@ -69,6 +69,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3126220698163796716, guid: bbdf52f14c5c8744c8f5f14ad47b8296, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -4812372780564916017, guid: 0956e6e024ac83d449f4af94830bfd40, type: 3}
+    - target: {fileID: -3126220698163796716, guid: bbdf52f14c5c8744c8f5f14ad47b8296, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0bc31a0db40c71247b0462c1821971b1, type: 2}
@@ -81,9 +85,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: 796756b54fdae294aae3c951c68f71cb, type: 2}
     - target: {fileID: 7619548493201867734, guid: bbdf52f14c5c8744c8f5f14ad47b8296, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1593577335283316231, guid: 0956e6e024ac83d449f4af94830bfd40, type: 3}
+    - target: {fileID: 7619548493201867734, guid: bbdf52f14c5c8744c8f5f14ad47b8296, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 8b102ee0734502543847c3be3d34dfc8, type: 2}
+      objectReference: {fileID: 2100000, guid: 917a9d0c5d613534192303849b10e807, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -229,7 +237,6 @@ MonoBehaviour:
   _renderer: {fileID: 0}
   nextTile: {fileID: 0}
   numPlayer: 1
-  indiceEjercito: 0
   haMovido: 0
   numCatapulta: 1
   numInfanteria: 6

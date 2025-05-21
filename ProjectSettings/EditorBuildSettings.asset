@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mapa.unity
     guid: 416233e9b5da7f342bce054cd623500a
+  - enabled: 1
+    path: Assets/Scenes/Trailer.unity
+    guid: 88787c6c0d10e464baf59223070ca6fa
   m_configObjects: {}

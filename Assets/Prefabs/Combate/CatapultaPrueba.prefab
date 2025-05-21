@@ -626,7 +626,7 @@ MonoBehaviour:
   miNavMeshAgent: {fileID: 6074142732510234967}
   miAnimator: {fileID: 1429966692871483559}
   player: 
-  unitTarget: {fileID: 0}
+  targetFollowed: {fileID: 0}
   objetivo: {fileID: 0}
   miUnidadManager: {fileID: 0}
   numeroUnidad: 0
@@ -637,6 +637,7 @@ MonoBehaviour:
   atacando: 0
   defendiendo: 0
   muerto: 0
+  cargandoCatapulta: 0
   unitSelector: {fileID: 5195749558319717916}
 --- !u!1 &7746969140204598657
 GameObject:
@@ -1228,6 +1229,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: df364611273f9984baea8a9982a15631, type: 3}
       propertyPath: m_Name
       value: Great Sword Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: df364611273f9984baea8a9982a15631, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

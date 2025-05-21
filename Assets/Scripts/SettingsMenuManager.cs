@@ -12,6 +12,7 @@ public class OpcionesMenuManager : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log("OpcionesMenuManager: Start soundManager.musicaVolume: " + soundManager.musicaVolume);
         // Inicializar los sliders con los valores actuales del SoundManager
         if (soundManager != null)
         {
@@ -32,7 +33,9 @@ public class OpcionesMenuManager : MonoBehaviour
     {
         if (soundManager != null)
         {
+            //Debug.Log("Cambiando volumen de música a: " + valor);
             soundManager.musicaVolume = valor; // Actualizar el volumen en el SoundManager
+            soundManager.SetGlobalMusicVolume(valor); // Aplicar el nuevo volumen global
         }
         else
         {
@@ -45,6 +48,7 @@ public class OpcionesMenuManager : MonoBehaviour
         if (soundManager != null)
         {
             soundManager.efectosVolume = valor; // Actualizar el volumen en el SoundManager
+            soundManager.SetGlobalSoundVolume(valor); // Aplicar el nuevo volumen global
         }
         else
         {

@@ -151,15 +151,29 @@ public class Unidad : MonoBehaviour
         Parar();
     }
 
-    public void FinAtacar(){
-        if( muerto)
+    //Lo llama la animación de la caballería
+    public void GolpearCaballeria()
+    {
+        if (muerto)
             return;
-        Debug.Log("Se acabó el ataque. De: "+player);
+        if (objetivo != null && Vector3.Distance(transform.position, objetivo.transform.position) < 5.5f)
+        {
+            Debug.Log("ZASCA!!! Soy caballero CARGANDO de " + player + ", he golpeado a: " + objetivo.GetComponent<Unidad>().tag + " que es de " + objetivo.GetComponent<Unidad>().player + " Distancia: " + Vector3.Distance(transform.position, objetivo.transform.position));
+            objetivo.GetComponent<Unidad>().Morir();
+        }
+    }
+
+    public void FinAtacar()
+    {
+        if (muerto)
+            return;
+        Debug.Log("Se acabó el ataque. De: " + player);
         //Si golpeo y mi objetivo está a menos de ?? me lo cargo
 
-        if( objetivo != null && Vector3.Distance(transform.position,objetivo.transform.position) < 5.5f){
-            Debug.Log("ZASCA!!! Soy "+player+", he golpeado a: "+objetivo.GetComponent<Unidad>().tag +" que es de "+objetivo.GetComponent<Unidad>().player+" Distancia: "+Vector3.Distance(transform.position,objetivo.transform.position));
-            if( !objetivo.GetComponent<Unidad>().defendiendo )
+        if (objetivo != null && Vector3.Distance(transform.position, objetivo.transform.position) < 5.5f)
+        {
+            Debug.Log("ZASCA!!! Soy " + player + ", he golpeado a: " + objetivo.GetComponent<Unidad>().tag + " que es de " + objetivo.GetComponent<Unidad>().player + " Distancia: " + Vector3.Distance(transform.position, objetivo.transform.position));
+            if (!objetivo.GetComponent<Unidad>().defendiendo)
                 objetivo.GetComponent<Unidad>().Morir();
         }
         miUnidadManager.atacando = false;

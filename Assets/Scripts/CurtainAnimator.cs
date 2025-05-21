@@ -10,7 +10,7 @@ public class CurtainAnimator : MonoBehaviour
     public float displayDuration = 2f; // Tiempo que permanece el mensaje visible
     public GameObject targetContent; // El contenido que se mostrará después de la cortinilla
     public bool cortinaCerrada = false;
-
+    public bool cortinaActivada = true;
     private void Start()
     {
         // Nos aseguramos de que los paneles comiencen en las posiciones iniciales
@@ -23,16 +23,22 @@ public class CurtainAnimator : MonoBehaviour
 
     public void PlayFullCurtainAnimation()
     {
+        if(!cortinaActivada)
+            return;
         StartCoroutine(CurtainSequence());
     }
 
     public void PlayOpenCurtainAnimation(bool mostrarContenido)
     {
+        if(!cortinaActivada)
+            return;
         StartCoroutine(AbrirCortina(mostrarContenido));
     }
 
     public void PlayCloseCurtainAnimation(bool mostrarContenido)
     {
+        if(!cortinaActivada)
+            return;
         StartCoroutine(CerrarCortina(mostrarContenido));
     }
 

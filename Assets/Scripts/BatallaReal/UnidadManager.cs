@@ -382,38 +382,44 @@ private void MoverCaballeria() {
             ReorganizarUnidades();
     }
 
-    public void CrearUnidades(GameObject laUnidad,int num,Material elMaterial1,Material elMaterial2,int numPlayer,bool seleccionada, int tipoUnidad){
+    public void CrearUnidades(GameObject laUnidad, int num, Material elMaterial1, Material elMaterial2, int numPlayer, bool seleccionada, int tipoUnidad)
+    {
         numTotalUnidades = num;
         modeloUnidad = laUnidad;
-        player = "Player"+numPlayer;
+        player = "Player" + numPlayer;
         material1Unidades = elMaterial1;
         material2Unidades = elMaterial2;
         unidades = new GameObject[6];
 
-        if( numTotalUnidades>=6)
+        if (numTotalUnidades >= 6)
             numUnidadesCombatiendo = 6;
         else
             numUnidadesCombatiendo = numTotalUnidades;
-        for( int i=0; i<numUnidadesCombatiendo;i++){
+        for (int i = 0; i < numUnidadesCombatiendo; i++)
+        {
             //Como la catapulta tiene otra orientación le pongo una rotación diferente
             int anguloRotacion = 0;
-            if( tipoUnidad == 0)
+            if (tipoUnidad == 0)
                 anguloRotacion = 180;
             else
                 anguloRotacion = 90;
-            unidades[i] = Instantiate(modeloUnidad,new Vector3(transform.GetChild(i).position.x, transform.GetChild(i).position.y, transform.GetChild(i).position.z), Quaternion.Euler(0,anguloRotacion,0));
+
+            unidades[i] = Instantiate(modeloUnidad, new Vector3(transform.GetChild(i).position.x, transform.GetChild(i).position.y, transform.GetChild(i).position.z), Quaternion.Euler(0, anguloRotacion, 0));
 
             unidades[i].GetComponentInChildren<SkinnedMeshRenderer>().material = material1Unidades;
             //Hasta que se solucione: Los soldados y la catapulta tienen distinto material
-            if(tipoUnidad == 0){
+            if (tipoUnidad == 0)
+            {
                 unidades[i].transform.Find("Catapulta").GetComponent<SkinnedMeshRenderer>().material = material2Unidades;
             }
-            if(tipoUnidad == 2){
+            if (tipoUnidad == 2)
+            {
                 unidades[i].transform.Find("Soldado").GetComponent<SkinnedMeshRenderer>().material = material1Unidades;
                 unidades[i].transform.Find("Caballo").GetComponent<SkinnedMeshRenderer>().material = material2Unidades;
             }
+
             unidades[i].GetComponent<Unidad>().setMyDestination(transform.GetChild(i).transform);
-            unidades[i].GetComponent<Unidad>().player = "Player"+numPlayer;
+            unidades[i].GetComponent<Unidad>().player = "Player" + numPlayer;
             unidades[i].GetComponent<Unidad>().miUnidadManager = this;
             unidades[i].GetComponent<Unidad>().numeroUnidad = i;
             this.seleccionada = seleccionada;
@@ -421,12 +427,19 @@ private void MoverCaballeria() {
             unidades[i].GetComponentInChildren<GestionarAnimaciones>().miUnidadManager = this;
             unidades[i].GetComponentInChildren<GestionarAnimaciones>().miNumUnidad = i;
 
-            if(numPlayer == 2)  //Si es del Player 2 la rotamos para que mire a la izquierda
-                unidades[i].transform.Rotate(0,180,0);
+            if (numPlayer == 2)  //Si es del Player 2 la rotamos para que mire a la izquierda
+                unidades[i].transform.Rotate(0, 180, 0);
             unidades[i].GetComponent<Unidad>().Parar();
         }
-        if(numUnidadesCombatiendo > 0)
+        if (numUnidadesCombatiendo > 0)
             ReorganizarUnidades();
+        if (numUnidadesCombatiendo == 1)
+        {
+            if (player == "Player1")
+                unidades[0].transform.position = transform.GetChild(1).transform.position;
+            else
+                unidades[0].transform.position = transform.GetChild(4).transform.position;            
+        }
     }
     public void AddRemainingUnits(){
         //Creamos las unidades que quedan
@@ -750,10 +763,12 @@ Debug.Log("Poniendo skin al caballero de "+player + " - " + material1Unidades.na
         }
         //Como me he quedado sin unidad en la vanguardia, le pongo ese destino a la última unidad que he visitado
         if( ! tengoVanguardia){
-//            Debug.Log("No tengo Vanguardia. Muevo la unidad: "+numUltimo+" a: "+numVanguardia);
-            if(unidades[numUltimo] != null)
+            //            Debug.Log("No tengo Vanguardia. Muevo la unidad: "+numUltimo+" a: "+numVanguardia);
+            if (unidades[numUltimo] != null){
                 unidades[numUltimo].GetComponent<Unidad>().setMyDestination(transform.GetChild(numVanguardia).transform);
+            }
             numUnidadVanguardia = numUltimo;
+            
         }
     }
 
